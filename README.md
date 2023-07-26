@@ -4,12 +4,12 @@ As mentioned below ("Set up in an IDE"), it may be convenient to import [qupath]
 BaseFolder/qupath
 BaseFolder/extension
 ```
-It is also necessary to make sure the targeted QuPath version is the same in the extension's and qupath's settings.gradle.
-This extension's settings.gradle states `gradle.ext.qupathVersion = "0.4.3"`, while QuPath's is `gradle.ext.qupathVersion = "0.5.0-SNAPSHOT"` by default.
+It is also necessary to make sure the targeted QuPath version is the same in the extension's and qupath's `settings.gradle`.
+This extension's `settings.gradle` states `gradle.ext.qupathVersion = "0.4.3"`, while QuPath's is `gradle.ext.qupathVersion = "0.5.0-SNAPSHOT"` by default.
 
 In summary, do the following
 1. Make sure the qupath and extension directories are separate (e.g. D:/qupath, D:/extension)
-2. In settings.gradle in the qupath folder, edit `gradle.ext.qupathVersion` to match that of the extension folder
+2. In `settings.gradle` in the qupath folder, edit `gradle.ext.qupathVersion` to match that of the extension folder
 3. add `includeFlat = '<extensionname>'` to qupath's settings.gradle
 
 
