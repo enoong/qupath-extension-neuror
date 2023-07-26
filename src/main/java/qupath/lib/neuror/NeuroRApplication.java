@@ -6,8 +6,30 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class NeuroRApplication extends Application {
+import java.io.IOException;
 
+public class NeuroRApplication {
+
+    static void showNeuroROptions() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setController(new NeuroRController());
+        loader.setLocation(NeuroRApplication.class.getResource("/qupath/lib/neuror/sample.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // 선택 사항: 컨트롤러 인스턴스에 접근해야 하는 경우, loader에서 가져올 수 있습니다.
+        //NeuroRController controller = loader.getController();
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("NeuroR GUI");
+        stage.show();
+    }
+    /*
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
@@ -22,8 +44,10 @@ public class NeuroRApplication extends Application {
         primaryStage.show();
     }
 
-    public static void main(String[] args) {
+    public static void openGUI(String[] args) {
         launch(args);
     }
+
+     */
 }
 

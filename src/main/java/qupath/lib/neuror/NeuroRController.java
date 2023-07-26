@@ -4,19 +4,20 @@
 
 package qupath.lib.neuror;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
-import javafx.scene.control.TextField;
-import javafx.fxml.Initializable;
 import java.io.PrintWriter;
-import javafx.scene.control.ChoiceBox;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class NeuroRController implements Initializable {
@@ -406,6 +407,7 @@ public class NeuroRController implements Initializable {
     }
 
 
+    /*
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert Run != null : "fx:id=\"Run\" was not injected: check your FXML file 'sample.fxml'.";
@@ -430,4 +432,5 @@ public class NeuroRController implements Initializable {
         assert textField4 != null : "fx:id=\"textField4\" was not injected: check your FXML file 'sample.fxml'.";
 
     }
+     */
 }
