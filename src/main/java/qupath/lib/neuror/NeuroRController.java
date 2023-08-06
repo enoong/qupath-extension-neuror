@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import qupath.lib.gui.QuPathGUI;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -21,6 +22,12 @@ import java.util.ResourceBundle;
 
 
 public class NeuroRController implements Initializable {
+
+    private QuPathGUI qupath;
+
+    public NeuroRController (QuPathGUI qupath) {
+        this.qupath = qupath;
+    }
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -37,11 +44,14 @@ public class NeuroRController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set the default text for TextField1
-        String defaultPath1 = "D:/Anaconda3/envs/qupath";
-        folderTextField1.setText(defaultPath1);
+        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
+        folderTextField1.setText(defaultAnacondaEnvPath);
         // Set the default text for TextField2
-        String defaultPath2 = defaultPath1 + "/python";
-        folderTextField2.setText(defaultPath2);
+        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
+        folderTextField2.setText(defaultPythonExecPath);
+        // Set the default text for TextField3
+        String defaultNeuroRExecPath = NeuroRExtension.neurorExecPathProperty().get();
+        folderTextField3.setText(defaultNeuroRExecPath);
 
         // Add items to the choiceBox1 (img_lib)
         choiceBox1.getItems().addAll("openslide", "bioformats", "dicom");
@@ -126,7 +136,8 @@ public class NeuroRController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath();
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
+            NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
             folderTextField1.setText(folderPath);
             saveToGroovyScript();
         }
@@ -141,7 +152,8 @@ public class NeuroRController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath();
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
+            NeuroRExtension.pythonExecPathProperty.setValue(folderPath);
             folderTextField2.setText(folderPath);
             saveToGroovyScript();
         }
@@ -156,7 +168,8 @@ public class NeuroRController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            String filePath = selectedFile.getAbsolutePath();
+            String filePath = selectedFile.getAbsolutePath().replace('\\','/');
+            NeuroRExtension.neurorExecPathProperty.setValue(filePath);
             folderTextField3.setText(filePath);
             saveToGroovyScript();
         }
@@ -171,7 +184,7 @@ public class NeuroRController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            String filePath = selectedFile.getAbsolutePath();
+            String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             folderTextField4.setText(filePath);
             saveToGroovyScript();
         }
@@ -186,7 +199,7 @@ public class NeuroRController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath();
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
 
             // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
             if (!folderPath.endsWith(File.separator)) {
@@ -207,7 +220,7 @@ public class NeuroRController implements Initializable {
         File selectedDirectory = directoryChooser.showDialog(stage);
 
         if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath();
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
 
             // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
             if (!folderPath.endsWith(File.separator)) {
@@ -222,9 +235,13 @@ public class NeuroRController implements Initializable {
     @FXML // fx:id="Run"
     private Button Run; // Value injected by FXMLLoader
 
+    //define run button action
+    String scriptPath = null;
     @FXML
     private void handleRunButtonClick(ActionEvent event) {
         saveToGroovyScript();
+        File file = new File(scriptPath);
+        qupath.getScriptEditor().showScript(file);
     }
 
     private void saveToGroovyScript() {
@@ -383,11 +400,11 @@ public class NeuroRController implements Initializable {
             String filledScript = String.format(
                     scriptTemplate,
                     folderTextField1.getText(),
-                    folderTextField2.getText(),
-                    folderTextField3.getText(),
-                    folderTextField4.getText(),
-                    folderTextField5.getText(),
-                    folderTextField6.getText(),
+                    folderTextField2.getText().replace('\\','/'),
+                    folderTextField3.getText().replace('\\','/'),
+                    folderTextField4.getText().replace('\\','/'),
+                    folderTextField5.getText().replace('\\','/'),
+                    folderTextField6.getText().replace('\\','/'),
                     choiceBox1.getValue(), //img_lib
                     textField1.getText(), //patch_size
                     choiceBox2.getValue(), //level
@@ -396,8 +413,7 @@ public class NeuroRController implements Initializable {
                     textField4.getText(), //batchSize
                     choiceBox3.getValue() //num_gpus
             );
-
-            String scriptPath = "run_segmentation.groovy"; // Replace with your actual script path
+            scriptPath = folderTextField6.getText() + "run_segmentation.groovy"; // Replace with your actual script path
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
                 writer.print(filledScript);
             }

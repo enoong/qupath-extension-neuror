@@ -1,18 +1,24 @@
 package qupath.lib.neuror;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import qupath.lib.gui.QuPathGUI;
 
 import java.io.IOException;
 
 public class NeuroRApplication {
 
-    static void showNeuroROptions() {
+    private QuPathGUI qupath;
+
+    NeuroRApplication (QuPathGUI qupath) {
+        this.qupath = qupath;
+    }
+
+     void showNeuroROptions() {
         FXMLLoader loader = new FXMLLoader();
-        loader.setController(new NeuroRController());
+        loader.setController(new NeuroRController(qupath));
         loader.setLocation(NeuroRApplication.class.getResource("/qupath/lib/neuror/sample.fxml"));
         Parent root = null;
         try {
