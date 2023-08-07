@@ -145,16 +145,16 @@ public class NeuroRController implements Initializable {
 
     @FXML
     private void handleButtonClick2(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Folders");
+        FileChooser filechooser = new FileChooser();
+        FileChooser.setTitle("Select File");
 
         Stage stage = (Stage) folderTextField2.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
-        if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
-            NeuroRExtension.pythonExecPathProperty.setValue(folderPath);
-            folderTextField2.setText(folderPath);
+        if (selectedFile != null) {
+            String filePath = selectedFile.getAbsolutePath().replace('\\','/');
+            NeuroRExtension.pythonExecPathProperty.setValue(filePath);
+            folderTextField2.setText(filePath);
             saveToGroovyScript();
         }
     }
