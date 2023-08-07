@@ -145,8 +145,8 @@ public class NeuroRController implements Initializable {
 
     @FXML
     private void handleButtonClick2(ActionEvent event) {
-        FileChooser filechooser = new FileChooser();
-        FileChooser.setTitle("Select File");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select File");
 
         Stage stage = (Stage) folderTextField2.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
