@@ -391,7 +391,7 @@ public class NeuroRController implements Initializable {
                     "}\n" +
                     "\n" +
                     "def IMname = getProjectEntry().getImageName()\n" +
-                    "print 'Export tiles: ' + IMname\n" +
+                    "print 'Done: ' + IMname\n" +
                     "\n\n" +
                     "Thread.sleep(100);\n" +
                     "javafx.application.Platform.runLater {\n" +
