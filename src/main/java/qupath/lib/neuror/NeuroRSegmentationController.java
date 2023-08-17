@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'sample.fxml' Controller Class
+ * Sample Skeleton for 'NeuroR_Segmentation.fxml' Controller Class
  */
 
 package qupath.lib.neuror;
@@ -18,14 +18,16 @@ import qupath.lib.gui.QuPathGUI;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class NeuroRController implements Initializable {
+public class NeuroRSegmentationController implements Initializable {
 
     private QuPathGUI qupath;
 
-    public NeuroRController (QuPathGUI qupath) {
+    public NeuroRSegmentationController(QuPathGUI qupath) {
         this.qupath = qupath;
     }
 
@@ -50,7 +52,7 @@ public class NeuroRController implements Initializable {
         String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
         folderTextField2.setText(defaultPythonExecPath);
         // Set the default text for TextField3
-        String defaultNeuroRExecPath = NeuroRExtension.neurorExecPathProperty().get();
+        String defaultNeuroRExecPath = NeuroRExtension.neurorSegmentationExecPathProperty().get();
         folderTextField3.setText(defaultNeuroRExecPath);
 
         // Add items to the choiceBox1 (img_lib)
@@ -139,7 +141,7 @@ public class NeuroRController implements Initializable {
             String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
             NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
             folderTextField1.setText(folderPath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -155,7 +157,7 @@ public class NeuroRController implements Initializable {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             NeuroRExtension.pythonExecPathProperty.setValue(filePath);
             folderTextField2.setText(filePath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -169,9 +171,9 @@ public class NeuroRController implements Initializable {
 
         if (selectedFile != null) {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
-            NeuroRExtension.neurorExecPathProperty.setValue(filePath);
+            NeuroRExtension.neurorSegmentationExecPath.setValue(filePath);
             folderTextField3.setText(filePath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -186,7 +188,7 @@ public class NeuroRController implements Initializable {
         if (selectedFile != null) {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             folderTextField4.setText(filePath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -207,7 +209,7 @@ public class NeuroRController implements Initializable {
             }
 
             folderTextField5.setText(folderPath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -228,7 +230,7 @@ public class NeuroRController implements Initializable {
             }
 
             folderTextField6.setText(folderPath);
-            saveToGroovyScript();
+            //saveToGroovyScript();
         }
     }
 
@@ -288,7 +290,7 @@ public class NeuroRController implements Initializable {
                     "int level = %s                     // which level to extract segmentation from (choosing 0 may be slow)\n" +
                     "def extension = \".tiff\"                 // pyramidal TIFF\n" +
                     "//def classNames = [\"Epidermis\", \"Adnexa\"]    // names of classes of interest (in this case two classes, excluding the background class)\n" +
-                    "classNames = [\"%s\"] \n" +
+                    "classNames = [%s] \n" +
                     "def channel = 0// 0-based index for the channel to threshold\n" +
                     "int overlap = %s\n" +
                     "\n" +
@@ -400,6 +402,18 @@ public class NeuroRController implements Initializable {
                     "}\n" +
                     "Thread.sleep(100);\n";
 
+            //Edit class names into appropriate string
+            //e.g. "Tumor, Cells, Immune" -> "Tumor", "Cells", "Immune"
+            String classNamesText = textField3.getText();
+            List<String> classes = Arrays.asList(classNamesText.split("\\s*,\\s*"));
+            StringBuilder classNames = new StringBuilder();
+            for (String i : classes) {
+                if (classNames.length() != 0) {
+                    classNames.append(",");
+                }
+                classNames.append("\"" + i + "\"");
+            }
+
             String filledScript = String.format(
                     scriptTemplate,
                     folderTextField1.getText(),
@@ -411,7 +425,7 @@ public class NeuroRController implements Initializable {
                     choiceBox1.getValue(), //img_lib
                     textField1.getText(), //patch_size
                     choiceBox2.getValue(), //level
-                    textField3.getText(), //className
+                    classNames.toString(), //className
                     textField2.getText(), //overlap
                     textField4.getText(), //batchSize
                     choiceBox3.getValue() //num_gpus
@@ -429,26 +443,26 @@ public class NeuroRController implements Initializable {
     /*
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert Run != null : "fx:id=\"Run\" was not injected: check your FXML file 'sample.fxml'.";
-        assert anacondaEnvPath != null : "fx:id=\"anacondaEnvPath\" was not injected: check your FXML file 'sample.fxml'.";
-        assert choiceBox1 != null : "fx:id=\"choiceBox1\" was not injected: check your FXML file 'sample.fxml'.";
-        assert choiceBox2 != null : "fx:id=\"choiceBox2\" was not injected: check your FXML file 'sample.fxml'.";
-        assert choiceBox3 != null : "fx:id=\"choiceBox3\" was not injected: check your FXML file 'sample.fxml'.";
-        assert execute_file != null : "fx:id=\"execute_file\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField1 != null : "fx:id=\"folderTextField1\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField2 != null : "fx:id=\"folderTextField2\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField3 != null : "fx:id=\"folderTextField3\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField4 != null : "fx:id=\"folderTextField4\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField5 != null : "fx:id=\"folderTextField5\" was not injected: check your FXML file 'sample.fxml'.";
-        assert folderTextField6 != null : "fx:id=\"folderTextField6\" was not injected: check your FXML file 'sample.fxml'.";
-        assert image_path != null : "fx:id=\"image_path\" was not injected: check your FXML file 'sample.fxml'.";
-        assert model_path != null : "fx:id=\"model_path\" was not injected: check your FXML file 'sample.fxml'.";
-        assert output_path != null : "fx:id=\"output_path\" was not injected: check your FXML file 'sample.fxml'.";
-        assert pythonExecPath != null : "fx:id=\"pythonExecPath\" was not injected: check your FXML file 'sample.fxml'.";
-        assert textField1 != null : "fx:id=\"textField1\" was not injected: check your FXML file 'sample.fxml'.";
-        assert textField2 != null : "fx:id=\"textField2\" was not injected: check your FXML file 'sample.fxml'.";
-        assert textField3 != null : "fx:id=\"textField3\" was not injected: check your FXML file 'sample.fxml'.";
-        assert textField4 != null : "fx:id=\"textField4\" was not injected: check your FXML file 'sample.fxml'.";
+        assert Run != null : "fx:id=\"Run\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert anacondaEnvPath != null : "fx:id=\"anacondaEnvPath\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert choiceBox1 != null : "fx:id=\"choiceBox1\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert choiceBox2 != null : "fx:id=\"choiceBox2\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert choiceBox3 != null : "fx:id=\"choiceBox3\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert execute_file != null : "fx:id=\"execute_file\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField1 != null : "fx:id=\"folderTextField1\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField2 != null : "fx:id=\"folderTextField2\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField3 != null : "fx:id=\"folderTextField3\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField4 != null : "fx:id=\"folderTextField4\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField5 != null : "fx:id=\"folderTextField5\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert folderTextField6 != null : "fx:id=\"folderTextField6\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert image_path != null : "fx:id=\"image_path\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert model_path != null : "fx:id=\"model_path\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert output_path != null : "fx:id=\"output_path\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert pythonExecPath != null : "fx:id=\"pythonExecPath\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert textField1 != null : "fx:id=\"textField1\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert textField2 != null : "fx:id=\"textField2\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert textField3 != null : "fx:id=\"textField3\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
+        assert textField4 != null : "fx:id=\"textField4\" was not injected: check your FXML file 'NeuroR_Segmentation.fxml'.";
 
     }
      */

@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qupath.lib.common.Version;
 import qupath.lib.gui.QuPathGUI;
-import qupath.lib.gui.dialogs.Dialogs;
 import qupath.lib.gui.extensions.QuPathExtension;
 import qupath.lib.gui.prefs.PathPrefs;
 
@@ -49,8 +48,11 @@ public class NeuroRExtension implements QuPathExtension {
 	static StringProperty pythonExecPathProperty = PathPrefs.createPersistentPreference(
 			"pythonExecPath", "D:/Anaconda3/envs/qupath/python" );
 
-	static StringProperty neurorExecPathProperty = PathPrefs.createPersistentPreference(
-			"neurorExecPath", "" );
+	static StringProperty neurorSegmentationExecPath = PathPrefs.createPersistentPreference(
+			"neurorSegmentationExecPath", "" );
+
+	static StringProperty neurorObjectDetectionExecPath = PathPrefs.createPersistentPreference(
+			"neurorObjectDetectionExecPath", "" );
 
 	public static StringProperty anacondaEnvPathProperty() {
 		return anacondaEnvPathProperty;
@@ -60,9 +62,11 @@ public class NeuroRExtension implements QuPathExtension {
 		return pythonExecPathProperty;
 	}
 
-	public static StringProperty neurorExecPathProperty() {
-		return neurorExecPathProperty;
+	public static StringProperty neurorSegmentationExecPathProperty() {
+		return neurorSegmentationExecPath;
 	}
+
+	public static StringProperty neurorObjectDetectionExecPathProperty() { return neurorObjectDetectionExecPath; }
 
 	@Override
 	public void installExtension(QuPathGUI qupath) {
@@ -73,6 +77,7 @@ public class NeuroRExtension implements QuPathExtension {
 		isInstalled = true;
 		addPreference(qupath);
 		addMenuItem(qupath);
+		addMenuItem1(qupath);
 	}
 
 	/**
@@ -101,11 +106,18 @@ public class NeuroRExtension implements QuPathExtension {
 				"Set python executable path (e.g. D:/Anaconda3/envs/qupath/python)"
 		);
 		qupath.getPreferencePane().addPropertyPreference(
-				neurorExecPathProperty,
+				neurorSegmentationExecPath,
 				String.class,
-				"NeuroR executable path",
+				"NeuroR Segmentation executable path",
 				EXTENSION_NAME,
-				"Set NeuroR executable path"
+				"Set NeuroR Segmentation executable path"
+		);
+		qupath.getPreferencePane().addPropertyPreference(
+				neurorObjectDetectionExecPath,
+				String.class,
+				"NeuroR Object Detection executable path",
+				EXTENSION_NAME,
+				"Set NeuroR Object Detection executable path"
 		);
 	}
 
@@ -115,17 +127,28 @@ public class NeuroRExtension implements QuPathExtension {
 	 */
 	private void addMenuItem(QuPathGUI qupath) {
 		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
-		MenuItem menuItem = new MenuItem("Create NeuroR Script");
+		MenuItem menuItem = new MenuItem("Segmentation");
 		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
 		menuItem.setOnAction(e -> {
 			//code to call NeuroRApplication
-			neuroRApplication.showNeuroROptions();
+			neuroRApplication.showNeuroRSegmentationOptions();
 		});
 		menuItem.disableProperty().bind(enableExtensionProperty.not());
 		menu.getItems().add(menuItem);
 	}
-	
-	
+
+	private void addMenuItem1(QuPathGUI qupath) {
+		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
+		MenuItem menuItem = new MenuItem("Object Detection");
+		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
+		menuItem.setOnAction(e -> {
+			//code to call NeuroRApplication
+			neuroRApplication.showNeuroRObjectDetectionOptions();
+		});
+		menuItem.disableProperty().bind(enableExtensionProperty.not());
+		menu.getItems().add(menuItem);
+	}
+
 	@Override
 	public String getName() {
 		return EXTENSION_NAME;
