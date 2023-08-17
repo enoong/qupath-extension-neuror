@@ -113,9 +113,6 @@ public class NeuroRObjectDetectionController implements Initializable {
     @FXML // fx:id="textField1" (patch_size)
     private TextField textField1; // Value injected by FXMLLoader
 
-    @FXML // fx:id="textField2" (overlap)
-    private TextField textField2; // Value injected by FXMLLoader
-
     @FXML // fx:id="textField3" (classNames)
     private TextField textField3; // Value injected by FXMLLoader
 
@@ -442,11 +439,11 @@ public class NeuroRObjectDetectionController implements Initializable {
                     folderTextField4.getText().replace('\\','/'),
                     folderTextField5.getText().replace('\\','/'),
                     folderTextField6.getText().replace('\\','/'),
+                    folderTextField7.getText().replace('\\','/'),
                     choiceBox1.getValue(), //img_lib
                     textField1.getText(), //patch_size
                     choiceBox2.getValue(), //level
                     classNames.toString(), //className
-                    textField2.getText(), //overlap
                     textField4.getText(), //batchSize
                     choiceBox3.getValue(), //num_gpus
                     selectedClassNames.toString() //selectedClassNames

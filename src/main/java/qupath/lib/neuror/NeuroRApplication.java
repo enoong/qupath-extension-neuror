@@ -32,7 +32,7 @@ public class NeuroRApplication {
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.setTitle("NeuroR GUI");
+        stage.setTitle("NeuroR Segmentation");
         stage.show();
     }
     void showNeuroRObjectDetectionOptions() {
@@ -51,7 +51,7 @@ public class NeuroRApplication {
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setScene(scene);
-        stage.setTitle("NeuroR GUI");
+        stage.setTitle("NeuroR Object Detection");
         stage.show();
     }    /*
     @Override

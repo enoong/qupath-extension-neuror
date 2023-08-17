@@ -79,8 +79,6 @@
                         <ChoiceBox fx:id="choiceBox1" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" />
                         <Label text="patch_size" GridPane.rowIndex="1" />
                         <TextField fx:id="textField1" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="overlap" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <TextField fx:id="textField2" prefHeight="23.0" prefWidth="87.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <Label text="classNames" GridPane.columnIndex="6" />
                         <TextField fx:id="textField3" prefHeight="25.0" prefWidth="91.0" GridPane.columnIndex="7" />
                         <Label text="level" GridPane.rowIndex="2" />
