@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -78,9 +79,15 @@
                         <TextField fx:id="textField2" prefHeight="23.0" prefWidth="87.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <Label text="classNames" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                         <TextField fx:id="textField3" prefHeight="25.0" prefWidth="91.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                        <Label text="level" GridPane.rowIndex="2" />
+                        <Label text="level" GridPane.rowIndex="2">
+                           <tooltip>
+                              <Tooltip text="which level to extract segmentation from (choosing 0 may be slow)" />
+                           </tooltip></Label>
                         <ChoiceBox fx:id="choiceBox2" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="batch_size" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Label text="batch_size" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <tooltip>
+                              <Tooltip text="The unit of the number of images during inference (e.g. 4, 16, 32, 64..)" />
+                           </tooltip></Label>
                         <TextField fx:id="textField4" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                         <Label text="num_gpus" GridPane.columnIndex="6" GridPane.rowIndex="2" />
                         <ChoiceBox fx:id="choiceBox3" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />

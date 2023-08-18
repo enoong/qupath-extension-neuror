@@ -70,6 +70,9 @@ public class NeuroRSegmentationController implements Initializable {
         // Set a default value
         choiceBox3.setValue("2");
 
+        // Set a default value (overlap)
+        textField2.setText("0");
+
         // Set a default value (batch_size)
         textField4.setText("128");
 
@@ -141,7 +144,6 @@ public class NeuroRSegmentationController implements Initializable {
             String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
             NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
             folderTextField1.setText(folderPath);
-            //saveToGroovyScript();
         }
     }
 
@@ -157,7 +159,6 @@ public class NeuroRSegmentationController implements Initializable {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             NeuroRExtension.pythonExecPathProperty.setValue(filePath);
             folderTextField2.setText(filePath);
-            //saveToGroovyScript();
         }
     }
 
@@ -173,11 +174,10 @@ public class NeuroRSegmentationController implements Initializable {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             NeuroRExtension.neurorSegmentationExecPath.setValue(filePath);
             folderTextField3.setText(filePath);
-            //saveToGroovyScript();
         }
     }
 
-    @FXML
+    @FXML //model_path
     private void handleButtonClick4(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select File");
@@ -188,7 +188,25 @@ public class NeuroRSegmentationController implements Initializable {
         if (selectedFile != null) {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             folderTextField4.setText(filePath);
-            //saveToGroovyScript();
+            String[] modelParseArray = filePath.split("_");
+            for (String str : modelParseArray) {
+                if (str.contains("ds")) {
+                    int ds_level = (int)(Math.log(Double.parseDouble(str.substring(2))) / Math.log(4));
+                    choiceBox2.setValue(Integer.toString(ds_level));
+                }
+            }
+            for (String str : modelParseArray) {
+                try {
+                    int patchSize = Integer.parseInt(str);
+                    if (patchSize % 64 == 0) {
+                        textField1.setText(Integer.toString(patchSize));
+                        break;
+                    }
+                }
+                catch (Exception e){
+                   continue;
+                }
+            }
         }
     }
 
@@ -209,7 +227,6 @@ public class NeuroRSegmentationController implements Initializable {
             }
 
             folderTextField5.setText(folderPath);
-            //saveToGroovyScript();
         }
     }
 
@@ -230,7 +247,6 @@ public class NeuroRSegmentationController implements Initializable {
             }
 
             folderTextField6.setText(folderPath);
-            //saveToGroovyScript();
         }
     }
 

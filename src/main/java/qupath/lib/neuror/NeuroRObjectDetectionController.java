@@ -191,6 +191,25 @@ public class NeuroRObjectDetectionController implements Initializable {
         if (selectedFile != null) {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             folderTextField4.setText(filePath);
+            String[] modelParseArray = filePath.split("_");
+            for (String str : modelParseArray) {
+                if (str.contains("ds")) {
+                    int ds_level = (int)(Math.log(Double.parseDouble(str.substring(2))) / Math.log(4));
+                    choiceBox2.setValue(Integer.toString(ds_level));
+                }
+            }
+            for (String str : modelParseArray) {
+                try {
+                    int patchSize = Integer.parseInt(str);
+                    if (patchSize % 64 == 0) {
+                        textField1.setText(Integer.toString(patchSize));
+                        break;
+                    }
+                }
+                catch (Exception e){
+                    continue;
+                }
+            }
             saveToGroovyScript();
         }
     }
