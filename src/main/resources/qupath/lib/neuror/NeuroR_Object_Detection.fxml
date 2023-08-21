@@ -100,7 +100,14 @@
                         <TextField fx:id="textField5" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <Button fx:id="Run" layoutX="226.0" layoutY="435.0" mnemonicParsing="false" onAction="#handleRunButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" />
+                  <Button fx:id="Run" layoutX="352.0" layoutY="448.0" mnemonicParsing="false" onAction="#handleRunButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" />
+                  <Label layoutX="35.0" layoutY="416.0" text="Script name: ">
+                     <tooltip>
+                        <Tooltip text="Script will be saved in project_dir/scripts" />
+                     </tooltip>
+                  </Label>
+                  <TextField fx:id="textField6" layoutX="116.0" layoutY="412.0" prefHeight="22.0" prefWidth="406.0" />
+                  <Button fx:id="Run1" layoutX="104.0" layoutY="448.0" mnemonicParsing="false" onAction="#generateScriptName" prefHeight="44.0" prefWidth="187.0" text="Generete script name" />
                </children>
             </AnchorPane>
         </items>

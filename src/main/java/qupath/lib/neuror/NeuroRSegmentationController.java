@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static qupath.lib.scripting.QP.*;
+
 
 public class NeuroRSegmentationController implements Initializable {
 
@@ -42,43 +44,6 @@ public class NeuroRSegmentationController implements Initializable {
 
     @FXML // fx:id="folderTextField1"
     private TextField folderTextField1; // Value injected by FXMLLoader
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set the default text for TextField1
-        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
-        folderTextField1.setText(defaultAnacondaEnvPath);
-        // Set the default text for TextField2
-        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
-        folderTextField2.setText(defaultPythonExecPath);
-        // Set the default text for TextField3
-        String defaultNeuroRExecPath = NeuroRExtension.neurorSegmentationExecPathProperty().get();
-        folderTextField3.setText(defaultNeuroRExecPath);
-
-        // Add items to the choiceBox1 (img_lib)
-        choiceBox1.getItems().addAll("openslide", "bioformats", "dicom");
-        // Set a default value
-        choiceBox1.setValue("openslide");
-
-        // Add items to the choiceBox2 (level)
-        choiceBox2.getItems().addAll("0", "1", "2", "3");
-        // Set a default value
-        choiceBox2.setValue("1");
-
-        // Add items to the ChoiceBox3 (num_gpus)
-        choiceBox3.getItems().addAll("1", "2");
-        // Set a default value
-        choiceBox3.setValue("2");
-
-        // Set a default value (overlap)
-        textField2.setText("0");
-
-        // Set a default value (batch_size)
-        textField4.setText("128");
-
-        // Set a default value (className)
-        textField3.setText("Tumor");
-    }
 
     @FXML // fx:id="execute_file"
     private Button execute_file; // Value injected by FXMLLoader
@@ -122,14 +87,60 @@ public class NeuroRSegmentationController implements Initializable {
     @FXML // fx:id="textField4" (batch_size)
     private TextField textField4; // Value injected by FXMLLoader
 
+    @FXML // fx:id="textField5" (groovy_script_name)
+    private TextField textField5; // Value injected by FXMLLoader
+
     @FXML // fx:id="choiceBox1" (img_lib)
-    private ChoiceBox choiceBox1;
+    private ChoiceBox<String> choiceBox1;
 
     @FXML // fx:id="choiceBox2" (level)
-    private ChoiceBox choiceBox2;
+    private ChoiceBox<String> choiceBox2;
 
     @FXML // fx:id="choiceBox3" (num_gpus)
-    private ChoiceBox choiceBox3;
+    private ChoiceBox<String> choiceBox3;
+
+    @FXML // fx:id="Run"
+    private Button Run; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Run1
+    private Button Run1; // Value injected by FXMLLoader
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set the default text for TextField1
+        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
+        folderTextField1.setText(defaultAnacondaEnvPath);
+        // Set the default text for TextField2
+        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
+        folderTextField2.setText(defaultPythonExecPath);
+        // Set the default text for TextField3
+        String defaultNeuroRExecPath = NeuroRExtension.neurorSegmentationExecPathProperty().get();
+        folderTextField3.setText(defaultNeuroRExecPath);
+
+        // Add items to the choiceBox1 (img_lib)
+        choiceBox1.getItems().addAll("openslide", "bioformats", "dicom");
+        // Set a default value
+        choiceBox1.setValue("openslide");
+
+        // Add items to the choiceBox2 (level)
+        choiceBox2.getItems().addAll("0", "1", "2", "3");
+        // Set a default value
+        choiceBox2.setValue("1");
+
+        // Add items to the ChoiceBox3 (num_gpus)
+        choiceBox3.getItems().addAll("1", "2");
+        // Set a default value
+        choiceBox3.setValue("2");
+
+        // Set a default value (overlap)
+        textField2.setText("0");
+
+        // Set a default value (batch_size)
+        textField4.setText("128");
+
+        // Set a default value (className)
+        textField3.setText("Tumor");
+    }
 
 
     @FXML
@@ -207,6 +218,7 @@ public class NeuroRSegmentationController implements Initializable {
                    continue;
                 }
             }
+            updateScriptName();
         }
     }
 
@@ -250,19 +262,20 @@ public class NeuroRSegmentationController implements Initializable {
         }
     }
 
-    @FXML // fx:id="Run"
-    private Button Run; // Value injected by FXMLLoader
-
     //define run button action
-    String scriptPath = null;
     @FXML
     private void handleRunButtonClick(ActionEvent event) {
-        saveToGroovyScript();
-        File file = new File(scriptPath);
+        File file = new File(saveToGroovyScript());
         qupath.getScriptEditor().showScript(file);
     }
 
-    private void saveToGroovyScript() {
+    //define generateScriptName button action
+    @FXML
+    private void generateScriptName(ActionEvent event) {
+        updateScriptName();
+    }
+
+    private String saveToGroovyScript() {
         try {
             String segmentation_script = new String(NeuroRSegmentationController.class
                     .getResourceAsStream("/qupath/lib/neuror/run_segmentation.groovy").readAllBytes());
@@ -297,14 +310,38 @@ public class NeuroRSegmentationController implements Initializable {
                     choiceBox3.getValue() //num_gpus
             );
 
-            //save run_segmentation.groovy
-            scriptPath = folderTextField6.getText() + "run_segmentation.groovy"; // Replace with your actual script path
+            String scriptName = textField5.getText();
+
+            if (scriptName == "") {
+                updateScriptName();
+                scriptName = textField5.getText();
+            }
+            String scriptPath = buildFilePath(PROJECT_BASE_DIR, "scripts", scriptName);
+            makePathInProject("scripts");
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
                 writer.print(filled_segmentation_script);
             }
+            return(scriptPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
+    }
+
+    private void updateScriptName() {
+        //calculate downsample
+        int downsample = 1;
+        int level = Integer.parseInt(choiceBox2.getValue());
+        downsample = (int) Math.pow(4, level);
+
+        //get script name
+        String scriptName = "downsample_" + String.valueOf(downsample) +
+                "_patch_size_" + textField1.getText() +
+                "_overlap_" + textField2.getText() +
+                "_segmentation.groovy";
+
+        //set textField5 to scriptname
+        textField5.setText(scriptName);
     }
 
 

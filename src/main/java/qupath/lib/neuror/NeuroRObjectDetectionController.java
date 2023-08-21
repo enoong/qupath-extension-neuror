@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static qupath.lib.scripting.QP.*;
 
 public class NeuroRObjectDetectionController implements Initializable {
 
@@ -42,40 +43,6 @@ public class NeuroRObjectDetectionController implements Initializable {
 
     @FXML // fx:id="folderTextField1"
     private TextField folderTextField1; // Value injected by FXMLLoader
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set the default text for TextField1
-        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
-        folderTextField1.setText(defaultAnacondaEnvPath);
-        // Set the default text for TextField2
-        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
-        folderTextField2.setText(defaultPythonExecPath);
-        // Set the default text for TextField3
-        String defaultNeuroRObjectDetectionExecPath = NeuroRExtension.neurorObjectDetectionExecPathProperty().get();
-        folderTextField3.setText(defaultNeuroRObjectDetectionExecPath);
-
-        // Add items to the choiceBox1 (img_lib)
-        choiceBox1.getItems().addAll("openslide", "bioformats", "dicom");
-        // Set a default value
-        choiceBox1.setValue("openslide");
-
-        // Add items to the choiceBox2 (level)
-        choiceBox2.getItems().addAll("0", "1", "2", "3");
-        // Set a default value
-        choiceBox2.setValue("1");
-
-        // Add items to the ChoiceBox3 (num_gpus)
-        choiceBox3.getItems().addAll("1", "2");
-        // Set a default value
-        choiceBox3.setValue("1");
-
-        // Set a default value (batch_size)
-        textField4.setText("128");
-
-        // Set a default value (className)
-        textField3.setText("Tumor");
-    }
 
     @FXML // fx:id="execute_file"
     private Button execute_file; // Value injected by FXMLLoader
@@ -122,14 +89,57 @@ public class NeuroRObjectDetectionController implements Initializable {
     @FXML // fx:id="textField5" (selectedClassNames)
     private TextField textField5; // Value injected by FXMLLoader
 
+    @FXML // fx:id="textField6" (groovy_script_name)
+    private TextField textField6; // Value injected by FXMLLoader
+
     @FXML // fx:id="choiceBox1" (img_lib)
-    private ChoiceBox choiceBox1;
+    private ChoiceBox<String> choiceBox1;
 
     @FXML // fx:id="choiceBox2" (level)
-    private ChoiceBox choiceBox2;
+    private ChoiceBox<String> choiceBox2;
 
     @FXML // fx:id="choiceBox3" (num_gpus)
-    private ChoiceBox choiceBox3;
+    private ChoiceBox<String> choiceBox3;
+
+    @FXML // fx:id="Run"
+    private Button Run; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Run1
+    private Button Run1; // Value injected by FXMLLoader
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set the default text for TextField1
+        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
+        folderTextField1.setText(defaultAnacondaEnvPath);
+        // Set the default text for TextField2
+        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
+        folderTextField2.setText(defaultPythonExecPath);
+        // Set the default text for TextField3
+        String defaultNeuroRObjectDetectionExecPath = NeuroRExtension.neurorObjectDetectionExecPathProperty().get();
+        folderTextField3.setText(defaultNeuroRObjectDetectionExecPath);
+
+        // Add items to the choiceBox1 (img_lib)
+        choiceBox1.getItems().addAll("openslide", "bioformats", "dicom");
+        // Set a default value
+        choiceBox1.setValue("openslide");
+
+        // Add items to the choiceBox2 (level)
+        choiceBox2.getItems().addAll("0", "1", "2", "3");
+        // Set a default value
+        choiceBox2.setValue("1");
+
+        // Add items to the ChoiceBox3 (num_gpus)
+        choiceBox3.getItems().addAll("1", "2");
+        // Set a default value
+        choiceBox3.setValue("1");
+
+        // Set a default value (batch_size)
+        textField4.setText("128");
+
+        // Set a default value (className)
+        textField3.setText("Tumor");
+    }
 
 
     @FXML
@@ -144,7 +154,6 @@ public class NeuroRObjectDetectionController implements Initializable {
             String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
             NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
             folderTextField1.setText(folderPath);
-            saveToGroovyScript();
         }
     }
 
@@ -160,7 +169,6 @@ public class NeuroRObjectDetectionController implements Initializable {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             NeuroRExtension.pythonExecPathProperty.setValue(filePath);
             folderTextField2.setText(filePath);
-            saveToGroovyScript();
         }
     }
 
@@ -176,7 +184,6 @@ public class NeuroRObjectDetectionController implements Initializable {
             String filePath = selectedFile.getAbsolutePath().replace('\\','/');
             NeuroRExtension.neurorSegmentationExecPath.setValue(filePath);
             folderTextField3.setText(filePath);
-            saveToGroovyScript();
         }
     }
 
@@ -210,7 +217,7 @@ public class NeuroRObjectDetectionController implements Initializable {
                     continue;
                 }
             }
-            saveToGroovyScript();
+            updateScriptName();
         }
     }
 
@@ -231,7 +238,6 @@ public class NeuroRObjectDetectionController implements Initializable {
             }
 
             folderTextField5.setText(folderPath);
-            saveToGroovyScript();
         }
     }
 
@@ -252,7 +258,6 @@ public class NeuroRObjectDetectionController implements Initializable {
             }
 
             folderTextField6.setText(folderPath);
-            saveToGroovyScript();
         }
     }
 
@@ -273,23 +278,23 @@ public class NeuroRObjectDetectionController implements Initializable {
             }
 
             folderTextField7.setText(folderPath);
-            saveToGroovyScript();
         }
     }
 
-    @FXML // fx:id="Run"
-    private Button Run; // Value injected by FXMLLoader
-
     //define run button action
-    String scriptPath = null;
     @FXML
     private void handleRunButtonClick(ActionEvent event) {
-        saveToGroovyScript();
-        File file = new File(scriptPath);
+        File file = new File(saveToGroovyScript());
         qupath.getScriptEditor().showScript(file);
     }
 
-    private void saveToGroovyScript() {
+    //define generateScriptName button action
+    @FXML
+    private void generateScriptName(ActionEvent event) {
+        updateScriptName();
+    }
+
+    private String saveToGroovyScript() {
         try {
 
             String detection_script = new String(NeuroRObjectDetectionController.class
@@ -335,15 +340,41 @@ public class NeuroRObjectDetectionController implements Initializable {
                     selectedClassNames.toString() //selectedClassNames
             );
 
-            scriptPath = folderTextField6.getText() + "run_segmentation.groovy"; // Replace with your actual script path
+            String scriptName = textField6.getText();
+
+            if (scriptName == "") {
+                updateScriptName();
+                scriptName = textField6.getText();
+            }
+
+            String scriptPath = buildFilePath(PROJECT_BASE_DIR, "scripts", scriptName);
+            makePathInProject("scripts");
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
                 writer.print(filled_detection_script);
             }
+            return(scriptPath);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
+
+    private void updateScriptName() {
+        //calculate downsample
+        int downsample = 1;
+        int level = Integer.parseInt(choiceBox2.getValue());
+        downsample = (int) Math.pow(4, level);
+
+        //get script name
+        String scriptName = "downsample_" + String.valueOf(downsample) +
+                "_patch_size_" + textField1.getText() +
+                "_object_detection.groovy";
+
+        //set textField6 to scriptname
+        textField6.setText(scriptName);
+    }
 
     /*
     @FXML // This method is called by the FXMLLoader when initialization is complete

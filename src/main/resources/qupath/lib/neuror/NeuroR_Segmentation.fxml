@@ -93,7 +93,14 @@
                         <ChoiceBox fx:id="choiceBox3" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <Button fx:id="Run" layoutX="226.0" layoutY="435.0" mnemonicParsing="false" onAction="#handleRunButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" />
+                  <Button fx:id="Run" layoutX="351.0" layoutY="448.0" mnemonicParsing="false" onAction="#handleRunButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" />
+                  <Label layoutX="35.0" layoutY="418.0" text="Script name: ">
+                     <tooltip>
+                        <Tooltip text="Script will be saved in project_dir/scripts" />
+                     </tooltip>
+                  </Label>
+                  <TextField fx:id="textField5" layoutX="117.0" layoutY="414.0" prefHeight="22.0" prefWidth="406.0" />
+                  <Button fx:id="Run1" layoutX="104.0" layoutY="448.0" mnemonicParsing="false" onAction="#generateScriptName" prefHeight="44.0" prefWidth="187.0" text="Generate script name" />
                </children>
             </AnchorPane>
         </items>
