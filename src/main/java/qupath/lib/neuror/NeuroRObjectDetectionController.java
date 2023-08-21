@@ -68,7 +68,7 @@ public class NeuroRObjectDetectionController implements Initializable {
         // Add items to the ChoiceBox3 (num_gpus)
         choiceBox3.getItems().addAll("1", "2");
         // Set a default value
-        choiceBox3.setValue("2");
+        choiceBox3.setValue("1");
 
         // Set a default value (batch_size)
         textField4.setText("128");
@@ -291,145 +291,12 @@ public class NeuroRObjectDetectionController implements Initializable {
 
     private void saveToGroovyScript() {
         try {
-            String scriptTemplate =
-                "import org.locationtech.jts.io.WKTWriter\n" +
-                "import qupath.lib.io.GsonTools\n" +
-                "\n" +
-                "// --- SET THESE PARAMETERS -----------------------------------------------------------\n" +
-                "\n" +
-                "// Parameters for running Python and Anaconda\n" +
-                "def anacondaEnvPath = '%s'\n" +
-                "def pythonExecPath = '%s'\n" +
-                "def execute_file = '%s'\n" +
-                "\n" +
-                "// Please enter the absolute paths for the model, the original image, and the output directory for the TIFF files\n" +
-                "//def model_path = \"E:/Neuro_Qupath_Det/model/Mitosis_test_ds1_512.net\"\n" +
-                "def model_path = '%s'\n" +
-                "def image_path = '%s'\n" +
-                "def output_path = '%s'\n" +
-                "\n" +
-                "// Input name of your annotation (geojson) folder\n" +
-                "json_export_folder = '%s'\n" +
-                "\n" +
-                "def masksPath = output_path // path to where TIFFs are stored \n" +
-                "\n" +
-                "def imageData = getCurrentImageData();\n" +
-                "image_name = imageData.getServer().getMetadata().getName()\n" +
-                "\n" +
-                "// Image processing library\n" +
-                "def img_lib = \"%s\" // or \"bioformats\" or \"dicom\"\n" +
-                "\n" +
-                "// If importing DICOM, set to true\n" +
-                "\n" +
-                "if (img_lib == \"dicom\")\n" +
-                "{\n" +
-                "    image_name = image_name.split('-')[0].trim()\n" +
-                "\n" +
-                "}\n" +
-                "\n" +
-                "int patch_size = %s \n" +
-                "int level = %s                           // which level to extract segmentation from (choosing 0 may be slow)\n" +
-                "def extension = \".tiff\"                 // pyramidal TIFF\n" +
-                "//def classNames = [\"Epidermis\", \"Adnexa\"]    // names of classes of interest (in this case two classes, excluding the background class)\n" +
-                "classNames = [%s] \n" +
-                "def channel = 0 // 0-based index for the channel to threshold\n" +
-                "int batch_size = %s // The unit of the number of images during inference ex) 4, 16, 32, 64..\n" +
-                "def dev_mode = \"gpu\" // or \"cpu\"\n" +
-                "def if_config = \"false\" // or \"true\" select between 32-bit and 16-bit floating points\n" +
-                "int num_gpus = %s \n" +
-                "\n" +
-                "def selectedClassNames = [%s]\n" +
-                "\n" +
-                "// ------------------------------------------------------------------------------------\n" +
-                "\n" +
-                "// --- Export Json Annotations --------------------------------------------------------\n" +
-                "\n" +
-                "// export_focus_geojson .. etc\n" +
-                "export_extension= \".geojson\"\n" +
-                "// .geojson\n" +
-                "\n" +
-                "// Get annotations\n" +
-                "//def annotations = getAnnotationObjects().collect {new qupath.lib.objects.PathAnnotationObject(it.getROI(), it.getPathClass())}\n" +
-                "def annotations = getAnnotationObjects().findAll { annotation ->\n" +
-                "    selectedClassNames.any { className -> annotation.getPathClass().getName() == className } && annotation.getROI()\n" +
-                "}\n" +
-                "// Get Gson instance\n" +
-                "def gson = GsonTools.getInstance(true)\n" +
-                "\n" +
-                "// Create 'annotations' directory if doesn't exist\n" +
-                "def path = buildFilePath(json_export_folder)\n" +
-                "\n" +
-                "\n" +
-                "def filename = GeneralTools.getNameWithoutExtension(getProjectEntry().getImageName())\n" +
-                "\n" +
-                "if (img_lib == \"dicom\")\n" +
-                "{  \n" +
-                "    filename = filename.split('-')[0].trim()\n" +
-                "    filename = filename.substring(0, filename.lastIndexOf('.'))\n" +
-                "}\n" +
-                "\n" +
-                "new File(path).mkdir()\n" +
-                "\n" +
-                "// Write to a new file inside the 'annotations' directory\n" +
-                "File file = new File(path + \"/\" + filename + export_extension)\n" +
-                "file.write(gson.toJson(annotations))\n" +
-                "\n" +
-                "def json_path = path + \"/\" + filename + export_extension\n" +
-                "\n" +
-                "print 'exported!'\n" +
-                "\n" +
-                "// --- RUN PYTHON MODULE --------------------------------------------------------------\n" +
-                "\n" +
-                "def command = [pythonExecPath, execute_file, model_path, json_path, image_path, image_name, output_path, patch_size as String, level as String, classNames as String, batch_size as String, dev_mode, if_config as String, img_lib, num_gpus as String]\n" +
-                "def processBuilder = new ProcessBuilder(command)\n" +
-                "processBuilder.directory(new File(\".\"))\n" +
-                "processBuilder.environment().put(\"PATH\", anacondaEnvPath + \";\" + System.env.PATH)\n" +
-                "processBuilder.redirectErrorStream(true)\n" +
-                "def process = processBuilder.start()\n" +
-                "def reader = new BufferedReader(new InputStreamReader(process.getInputStream()))\n" +
-                "reader.eachLine {\n" +
-                "    println it\n" +
-                "}\n" +
-                "\n" +
-                "process.waitFor()\n" +
-                "print \"Inference Done\"\n" +
-                "\n" +
-                "// ------------------------------------------------------------------------------------\n" +
-                "\n" +
-                "// --- Import Json Annotation ---------------------------------------------------------\n" +
-                "\n" +
-                "// Input name of your annotation (geojson) folder\n" +
-                "json_folder = output_path\n" +
-                "//export_focus .... etc\n" +
-                "json_extension = '.geojson'\n" +
-                "\n" +
-                "// Instantiate tools\n" +
-                "//def gson = GsonTools.getInstance(true);\n" +
-                "\n" +
-                "// Get path of image\n" +
-                "def import_filename = GeneralTools.getNameWithoutExtension(getProjectEntry().getImageName())\n" +
-                "\n" +
-                "if (img_lib == \"dicom\")\n" +
-                "{  \n" +
-                "    import_filename = import_filename.split('-')[0].trim()\n" +
-                "    import_filename = import_filename.substring(0, import_filename.lastIndexOf('.'))\n" +
-                "}\n" +
-                "// Prepare template\n" +
-                "def type = new com.google.gson.reflect.TypeToken<List<qupath.lib.objects.PathObject>>() {}.getType();\n" +
-                "def json = new File(buildFilePath(json_folder, import_filename + \"_predict\" + json_extension))\n" +
-                "\n" +
-                "// Deserialize\n" +
-                "deserializedAnnotations = gson.fromJson(json.getText('UTF-8'), type);\n" +
-                "\n" +
-                "// Add to image\n" +
-                "addObjects(deserializedAnnotations);\n" +
-                "\n" +
-                "// Resolve hierarchy\n" +
-                "resolveHierarchy()\n" +
-                "\n" +
-                "def IMname = getProjectEntry().getImageName()\n" +
-                "print 'Done: ' + IMname\n";
 
+            String detection_script = new String(NeuroRObjectDetectionController.class
+                    .getResourceAsStream("/qupath/lib/neuror/run_detection.groovy").readAllBytes());
+
+            //Edit class names into appropriate string
+            //e.g. "Tumor, Cells, Immune" -> "Tumor", "Cells", "Immune"
             String classNamesText = textField3.getText();
             List<String> classes = Arrays.asList(classNamesText.split("\\s*,\\s*"));
             StringBuilder classNames = new StringBuilder();
@@ -450,8 +317,8 @@ public class NeuroRObjectDetectionController implements Initializable {
                 selectedClassNames.append("\"" + i + "\"");
             }
 
-            String filledScript = String.format(
-                    scriptTemplate,
+            String filled_detection_script = String.format(
+                    detection_script,
                     folderTextField1.getText(),
                     folderTextField2.getText().replace('\\','/'),
                     folderTextField3.getText().replace('\\','/'),
@@ -470,7 +337,7 @@ public class NeuroRObjectDetectionController implements Initializable {
 
             scriptPath = folderTextField6.getText() + "run_segmentation.groovy"; // Replace with your actual script path
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
-                writer.print(filledScript);
+                writer.print(filled_detection_script);
             }
         } catch (Exception e) {
             e.printStackTrace();

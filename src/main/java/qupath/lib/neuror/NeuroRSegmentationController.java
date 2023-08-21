@@ -264,159 +264,8 @@ public class NeuroRSegmentationController implements Initializable {
 
     private void saveToGroovyScript() {
         try {
-            String scriptTemplate =
-                    "import ij.plugin.filter.ThresholdToSelection\n" +
-                    "import ij.process.ImageProcessor\n" +
-                    "import qupath.lib.objects.PathObjects\n" +
-                    "import qupath.lib.regions.ImagePlane\n" +
-                    "import qupath.imagej.processing.RoiLabeling\n" +
-                    "import ij.IJ\n" +
-                    "import static qupath.lib.gui.scripting.QPEx.*\n" +
-                    "import java.awt.image.BufferedImage\n" +
-                    "\n" +
-                    "// --- SET THESE PARAMETERS -----------------------------------------------------------\n" +
-                    "\n" +
-                    "// Parameters for running Python and Anaconda\n" +
-                    "def anacondaEnvPath = \"%s\"\n" +
-                    "def pythonExecPath = \"%s\"\n" +
-                    "def execute_file = \"%s\"\n" +
-                    "\n" +
-                    "// Please enter the absolute paths for the model, the original image, and the output directory for the TIFF files\n" +
-                    "def model_path = \"%s\"\n" +
-                    "def image_path = \"%s\"\n" +
-                    "def output_path =  \"%s\"\n" +
-                    "\n" +
-                    "def masksPath = output_path // path to where TIFFs are stored \n" +
-                    "\n" +
-                    "def imageData = getCurrentImageData();\n" +
-                    "image_name = imageData.getServer().getMetadata().getName()\n" +
-                    "\n" +
-                    "// Image processing library\n" +
-                    "def img_lib = \"%s\" // \"openslide\" // or \"bioformats\" // or \"dicom\"\n" +
-                    "\n" +
-                    "// If importing DICOM, set to true\n" +
-                    "//boolean is_dicom = false\n" +
-                    "if (img_lib == \"dicom\")\n" +
-                    "{\n" +
-                    "    image_name = image_name.split('-')[0].trim()\n" +
-                    "\n" +
-                    "}\n" +
-                    "\n" +
-                    "int patch_size = %s\n" +
-                    "int level = %s                     // which level to extract segmentation from (choosing 0 may be slow)\n" +
-                    "def extension = \".tiff\"                 // pyramidal TIFF\n" +
-                    "//def classNames = [\"Epidermis\", \"Adnexa\"]    // names of classes of interest (in this case two classes, excluding the background class)\n" +
-                    "classNames = [%s] \n" +
-                    "def channel = 0// 0-based index for the channel to threshold\n" +
-                    "int overlap = %s\n" +
-                    "\n" +
-                    "int batch_size = %s // The unit of the number of images during inference ex) 4, 16, 32, 64..\n" +
-                    "def dev_mode = \"gpu\" // or \"cpu\"\n" +
-                    "def if_config = \"false\" // or \"true\" select between 32-bit and 16-bit floating points\n" +
-                    "int num_gpus = %s\n" +
-                    "\n" +
-                    "// ------------------------------------------------------------------------------------\n" +
-                    "\n" +
-                    "\n" +
-                    "// --- RUN PYTHON MODULE --------------------------------------------------------------\n" +
-                    "\n" +
-                    "def command = [pythonExecPath, execute_file, model_path, image_path, image_name, output_path, patch_size as String, level as String, classNames as String, batch_size as String, overlap as String, dev_mode, if_config as String, img_lib, num_gpus as String]\n" +
-                    "def processBuilder = new ProcessBuilder(command)\n" +
-                    "processBuilder.directory(new File(\".\"))\n" +
-                    "processBuilder.environment().put(\"PATH\", anacondaEnvPath + \";\" + System.env.PATH)\n" +
-                    "processBuilder.redirectErrorStream(true)\n" +
-                    "def process = processBuilder.start()\n" +
-                    "def reader = new BufferedReader(new InputStreamReader(process.getInputStream()))\n" +
-                    "def downsample = \"\"\n" +
-                    "reader.eachLine {\n" +
-                    "    println it\n" +
-                    "    if (it.contains(\"Downsample\"))\n" +
-                    "        downsample = it.split(':')[1].trim().toInteger()\n" +
-                    "}\n" +
-                    "\n" +
-                    "process.waitFor()\n" +
-                    "\n" +
-                    "//\n" +
-                    "//// ------------------------------------------------------------------------------------\n" +
-                    "//\n" +
-                    "//// --- ANNOTATION IMPORT --------------------------------------------------------------\n" +
-                    "//\n" +
-                    "// Get a list of image files, stopping early if none can be found\\\n" +
-                    "\n" +
-                    "def dirOutput = new File(masksPath);\n" +
-                    "if (!dirOutput.isDirectory()) {\n" +
-                    "    print dirOutput + ' is not a valid directory!';\n" +
-                    "    return;\n" +
-                    "}\n" +
-                    "\n" +
-                    "// get current WSI, update paths to file\n" +
-                    "def currWSIName = GeneralTools.getNameWithoutExtension(getProjectEntry().getImageName())\n" +
-                    "\n" +
-                    "if (img_lib == \"dicom\")\n" +
-                    "{  \n" +
-                    "    currWSIName = currWSIName.split('-')[0].trim()\n" +
-                    "    currWSIName = currWSIName.substring(0, currWSIName.lastIndexOf('.'))\n" +
-                    "}\n" +
-                    "\n" +
-                    "def path = \"\"\n" +
-                    "String[] paths = new String[classNames.size()]\n" +
-                    "\n" +
-                    "for (int i=0; i< classNames.size(); i++)\n" +
-                    "{\n" +
-                    "\n" +
-                    "   paths[i] = masksPath + \"/\" + currWSIName +  \"_\" +classNames[i] + extension \n" +
-                    "   path = paths[i]\n" +
-                    "   currClassName = classNames[i]\n" +
-                    "   // check if file exists, if no return\n" +
-                    "   File file = new File(path)\n" +
-                    "   if (!file.exists()) {\n" +
-                    "       print path + ' does not exist!';\n" +
-                    "       return;\n" +
-                    "   }\n" +
-                    "   def server = buildServer(path)\n" +
-                    "//   if (level != 0) {\n" +
-                    "//       server = qupath.lib.images.servers.ImageServers.pyramidalize(server, server.getDownsampleForResolution(level))\n" +
-                    "//   }\n" +
-                    "   \n" +
-                    "   def belowClass = getPathClass('Ignore*')     // Class for pixels below the threshold\n" +
-                    "   def current_thresh = 0.5;\n" +
-                    "     \n" +
-                    "   def aboveClass = getPathClass(currClassName)     // Class for pixels above the threshold\n" +
-                    "   \n" +
-                    "   // Create a thresholded image\n" +
-                    "   def thresholdServer = PixelClassifierTools.createThresholdServer(server, channel, current_thresh, belowClass, getPathClass(currClassName))\n" +
-                    "  \n" +
-                    "   def hierarchy = getCurrentHierarchy()\n" +
-                    "   PixelClassifierTools.createAnnotationsFromPixelClassifier(hierarchy, thresholdServer, -1, -1)\n" +
-                    "   \n" +
-                    "   // Select current annotations\n" +
-                    "   selectObjectsByClassification(currClassName);\n" +
-                    "   \n" +
-                    "   // Get current annotations, rescale\n" +
-                    "   def oldObjects = getAnnotationObjects().findAll{it.getPathClass() == getPathClass(currClassName)}\n" +
-                    "   def transform = java.awt.geom.AffineTransform.getScaleInstance(downsample, downsample)\n" +
-                    "   def newObjects = oldObjects.collect {p -> PathObjectTools.transformObject(p, transform, false)}\n" +
-                    "   \n" +
-                    "   // Delete old annotations\n" +
-                    "   clearSelectedObjects(false);\n" +
-                    "   \n" +
-                    "   // add resulting annotation object (and update current threshold)\n" +
-                    "   addObjects(newObjects)\n" +
-                    "   current_thresh++;\n" +
-                    "      \n" +
-                    "   print \"Done!\"\n" +
-                    "    \n" +
-                    "}\n" +
-                    "\n" +
-                    "def IMname = getProjectEntry().getImageName()\n" +
-                    "print 'Done: ' + IMname\n" +
-                    "\n\n" +
-                    "Thread.sleep(100);\n" +
-                    "javafx.application.Platform.runLater {\n" +
-                    "getCurrentViewer().getImageRegionStore().cache.clear();\n" +
-                    "System.gc();\n" +
-                    "}\n" +
-                    "Thread.sleep(100);\n";
+            String segmentation_script = new String(NeuroRSegmentationController.class
+                    .getResourceAsStream("/qupath/lib/neuror/run_segmentation.groovy").readAllBytes());
 
             //Edit class names into appropriate string
             //e.g. "Tumor, Cells, Immune" -> "Tumor", "Cells", "Immune"
@@ -430,8 +279,9 @@ public class NeuroRSegmentationController implements Initializable {
                 classNames.append("\"" + i + "\"");
             }
 
-            String filledScript = String.format(
-                    scriptTemplate,
+            //fill run_segmentation.groovy
+            String filled_segmentation_script = String.format(
+                    segmentation_script,
                     folderTextField1.getText(),
                     folderTextField2.getText().replace('\\','/'),
                     folderTextField3.getText().replace('\\','/'),
@@ -446,9 +296,11 @@ public class NeuroRSegmentationController implements Initializable {
                     textField4.getText(), //batchSize
                     choiceBox3.getValue() //num_gpus
             );
+
+            //save run_segmentation.groovy
             scriptPath = folderTextField6.getText() + "run_segmentation.groovy"; // Replace with your actual script path
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
-                writer.print(filledScript);
+                writer.print(filled_segmentation_script);
             }
         } catch (Exception e) {
             e.printStackTrace();
