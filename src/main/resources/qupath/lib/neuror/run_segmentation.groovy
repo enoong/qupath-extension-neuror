@@ -1,5 +1,3 @@
-package qupath.lib.neuror
-
 import ij.plugin.filter.ThresholdToSelection
 import ij.process.ImageProcessor
 import qupath.lib.objects.PathObjects
