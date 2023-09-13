@@ -5,7 +5,7 @@ import qupath.lib.io.GsonTools
 
 // Parameters for running Python and Anaconda
 def anacondaEnvPath = "%s"
-def pythonExecPath = anacondaEnvPath + "%s"
+def pythonExecPath = "%s"
 def execute_file = "%s"
 
 // Please enter the absolute paths for the model, the original image, and the output directory for the TIFF files

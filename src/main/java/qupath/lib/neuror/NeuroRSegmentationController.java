@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -33,11 +35,15 @@ public class NeuroRSegmentationController implements Initializable {
         this.qupath = qupath;
     }
 
+
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
+
+    @FXML //environment path titledpane
+    private TitledPane envPathPane;
 
     @FXML // fx:id="anacondaEnvPath"
     private Button anacondaEnvPath; // Value injected by FXMLLoader
@@ -142,6 +148,11 @@ public class NeuroRSegmentationController implements Initializable {
         textField3.setText("Tumor");
     }
 
+    @FXML
+    private void envPathPaneClicked(MouseEvent event) {
+        System.out.println("hello");
+        envPathPane.getScene().getWindow().sizeToScene();
+    }
 
     @FXML
     private void handleButtonClick1(ActionEvent event) {
