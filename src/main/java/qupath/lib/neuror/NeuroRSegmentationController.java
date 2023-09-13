@@ -150,7 +150,6 @@ public class NeuroRSegmentationController implements Initializable {
 
     @FXML
     private void envPathPaneClicked(MouseEvent event) {
-        System.out.println("hello");
         envPathPane.getScene().getWindow().sizeToScene();
     }
 
