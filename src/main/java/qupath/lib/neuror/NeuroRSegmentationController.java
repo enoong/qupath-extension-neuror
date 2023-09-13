@@ -7,16 +7,14 @@ package qupath.lib.neuror;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import qupath.lib.gui.QuPathGUI;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -104,6 +102,18 @@ public class NeuroRSegmentationController implements Initializable {
 
     @FXML // fx:id="choiceBox3" (num_gpus)
     private ChoiceBox<String> choiceBox3;
+
+    @FXML // fx:id="ROICheckBox"
+    private CheckBox ROICheckBox;
+
+    @FXML // fx:id="folderTextField7" (json_export_folder path)
+    private TextField folderTextField7;
+
+    @FXML //fx:id="textField6" (ROI class names)
+    private TextField textField6;
+
+    @FXML //fx:id="jsonPathButton"
+    private Button jsonPathButton;
 
     @FXML // fx:id="Run"
     private Button Run; // Value injected by FXMLLoader
@@ -272,6 +282,43 @@ public class NeuroRSegmentationController implements Initializable {
         }
     }
 
+    //ROI checkbox clicked -> disable or enable json_export_folder, ROI class names
+    @FXML
+    private void ROICheckBoxClicked(ActionEvent event) {
+        if (ROICheckBox.isSelected()) {
+            folderTextField7.setDisable(false);
+            jsonPathButton.setDisable(false);
+            textField6.setDisable(false);
+        }
+        else {
+            folderTextField7.setDisable(true);
+            jsonPathButton.setDisable(true);
+            textField6.setDisable(true);
+        }
+
+    }
+
+    //select json export folder
+    @FXML
+    private void handleButtonClick7(ActionEvent event) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Select Folders");
+
+        Stage stage = (Stage) folderTextField7.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+
+        if (selectedDirectory != null) {
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
+
+            // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
+            if (!folderPath.endsWith(File.separator)) {
+                folderPath = folderPath + File.separator;
+            }
+
+            folderTextField7.setText(folderPath);
+        }
+    }
+
     //define run button action
     @FXML
     private void handleRunButtonClick(ActionEvent event) {
@@ -287,8 +334,8 @@ public class NeuroRSegmentationController implements Initializable {
 
     private String saveToGroovyScript() {
         try {
-            String segmentation_script = new String(NeuroRSegmentationController.class
-                    .getResourceAsStream("/qupath/lib/neuror/run_segmentation.groovy").readAllBytes());
+
+            String filled_segmentation_script;
 
             //Edit class names into appropriate string
             //e.g. "Tumor, Cells, Immune" -> "Tumor", "Cells", "Immune"
@@ -302,23 +349,65 @@ public class NeuroRSegmentationController implements Initializable {
                 classNames.append("\"" + i + "\"");
             }
 
-            //fill run_segmentation.groovy
-            String filled_segmentation_script = String.format(
-                    segmentation_script,
-                    folderTextField1.getText(),
-                    folderTextField2.getText().replace('\\','/'),
-                    folderTextField3.getText().replace('\\','/'),
-                    folderTextField4.getText().replace('\\','/'),
-                    folderTextField5.getText().replace('\\','/'),
-                    folderTextField6.getText().replace('\\','/'),
-                    choiceBox1.getValue(), //img_lib
-                    textField1.getText(), //patch_size
-                    choiceBox2.getValue(), //level
-                    classNames.toString(), //className
-                    textField2.getText(), //overlap
-                    textField4.getText(), //batchSize
-                    choiceBox3.getValue() //num_gpus
-            );
+            // run for whole image
+            if (ROICheckBox.isSelected() == false) {
+                String segmentation_script = new String(NeuroRSegmentationController.class
+                        .getResourceAsStream("/qupath/lib/neuror/run_segmentation.groovy").readAllBytes());
+
+
+                //fill run_segmentation.groovy
+                filled_segmentation_script = String.format(
+                        segmentation_script,
+                        folderTextField1.getText(),
+                        folderTextField2.getText().replace('\\', '/'),
+                        folderTextField3.getText().replace('\\', '/'),
+                        folderTextField4.getText().replace('\\', '/'),
+                        folderTextField5.getText().replace('\\', '/'),
+                        folderTextField6.getText().replace('\\', '/'),
+                        choiceBox1.getValue(), //img_lib
+                        textField1.getText(), //patch_size
+                        choiceBox2.getValue(), //level
+                        classNames.toString(), //className
+                        textField2.getText(), //overlap
+                        textField4.getText(), //batchSize
+                        choiceBox3.getValue() //num_gpus
+                );
+            }
+            //ROI class names specified
+            else {
+                String segmentation_script = new String(NeuroRSegmentationController.class
+                        .getResourceAsStream("/qupath/lib/neuror/run_segmentation_roi.groovy").readAllBytes());
+
+                String ROIClassNamesText = textField6.getText();
+                List<String> ROIClasses = Arrays.asList(ROIClassNamesText.split("\\s*,\\s*"));
+                StringBuilder ROIClassNames = new StringBuilder();
+                for (String i : ROIClasses) {
+                    if (ROIClassNames.length() != 0) {
+                        ROIClassNames.append(",");
+                    }
+                    ROIClassNames.append("\"" + i + "\"");
+                }
+
+                //fill run_segmentation_roi.groovy
+                filled_segmentation_script = String.format(
+                        segmentation_script,
+                        folderTextField1.getText(),
+                        folderTextField2.getText().replace('\\', '/'),
+                        folderTextField3.getText().replace('\\', '/'),
+                        folderTextField4.getText().replace('\\', '/'),
+                        folderTextField5.getText().replace('\\', '/'),
+                        folderTextField6.getText().replace('\\', '/'),
+                        folderTextField7.getText().replace('\\','/'),
+                        choiceBox1.getValue(), //img_lib
+                        textField1.getText(), //patch_size
+                        choiceBox2.getValue(), //level
+                        classNames.toString(), //className
+                        textField2.getText(), //overlap
+                        textField4.getText(), //batchSize
+                        choiceBox3.getValue(), //num_gpus
+                        ROIClassNames.toString() //ROI Class names
+                );
+            }
 
             String scriptName = textField5.getText();
 
@@ -326,6 +415,7 @@ public class NeuroRSegmentationController implements Initializable {
                 updateScriptName();
                 scriptName = textField5.getText();
             }
+
             String scriptPath = buildFilePath(PROJECT_BASE_DIR, "scripts", scriptName);
             makePathInProject("scripts");
             try (PrintWriter writer = new PrintWriter(scriptPath, "UTF-8")) {
@@ -347,8 +437,14 @@ public class NeuroRSegmentationController implements Initializable {
         //get script name
         String scriptName = "downsample_" + String.valueOf(downsample) +
                 "_patch_size_" + textField1.getText() +
-                "_overlap_" + textField2.getText() +
-                "_segmentation.groovy";
+                "_overlap_" + textField2.getText();
+
+        if (ROICheckBox.isSelected() == false) {
+            scriptName += "_segmentation.groovy";
+        }
+        else {
+            scriptName += "_segmentation_roi.groovy";
+        }
 
         //set textField5 to scriptname
         textField5.setText(scriptName);
