@@ -352,10 +352,10 @@ public class NeuroRSegmentationController implements Initializable {
             // run for whole image
             if (ROICheckBox.isSelected() == false) {
                 String segmentation_script = new String(NeuroRSegmentationController.class
-                        .getResourceAsStream("/qupath/lib/neuror/run_segmentation.groovy").readAllBytes());
+                        .getResourceAsStream("/qupath/lib/neuror/run_segmentation_roi.groovy").readAllBytes());
 
 
-                //fill run_segmentation.groovy
+                //fill run_segmentation_roi.groovy
                 filled_segmentation_script = String.format(
                         segmentation_script,
                         folderTextField1.getText(),
@@ -364,13 +364,15 @@ public class NeuroRSegmentationController implements Initializable {
                         folderTextField4.getText().replace('\\', '/'),
                         folderTextField5.getText().replace('\\', '/'),
                         folderTextField6.getText().replace('\\', '/'),
+                        "", //blank space for json export folder
                         choiceBox1.getValue(), //img_lib
                         textField1.getText(), //patch_size
                         choiceBox2.getValue(), //level
                         classNames.toString(), //className
                         textField2.getText(), //overlap
                         textField4.getText(), //batchSize
-                        choiceBox3.getValue() //num_gpus
+                        choiceBox3.getValue(), //num_gpus
+                        "" //blank space for ROI class names
                 );
             }
             //ROI class names specified
