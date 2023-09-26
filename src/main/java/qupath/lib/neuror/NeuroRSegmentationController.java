@@ -13,6 +13,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import qupath.lib.gui.QuPathGUI;
+import qupath.lib.gui.dialogs.Dialogs;
 
 import javax.swing.*;
 import java.io.File;
@@ -163,19 +164,29 @@ public class NeuroRSegmentationController implements Initializable {
         envPathPane.getScene().getWindow().sizeToScene();
     }
 
-    @FXML
-    private void handleButtonClick1(ActionEvent event) {
+    private String getDirectory(Stage stage, String setInitialDirectory) {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Select Folders");
-
-        Stage stage = (Stage) folderTextField1.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stage);
-
-        if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
-            NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
-            folderTextField1.setText(folderPath);
+        if (setInitialDirectory != null) {
+            directoryChooser.setInitialDirectory(new File(buildFilePath(setInitialDirectory)));
         }
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        if (selectedDirectory != null) {
+            String folderPath = selectedDirectory.getAbsolutePath().replace('\\', '/');
+            return folderPath;
+        }
+        else {
+            return null;
+        }
+    }
+
+    @FXML
+    private void handleButtonClick1(ActionEvent event) {
+        Stage stage = (Stage) folderTextField1.getScene().getWindow();
+        String folderPath = getDirectory(stage, null);
+
+        NeuroRExtension.anacondaEnvPathProperty.setValue(folderPath);
+        folderTextField1.setText(folderPath);
     }
 
     @FXML
@@ -212,6 +223,7 @@ public class NeuroRSegmentationController implements Initializable {
     private void handleButtonClick4(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select File");
+        fileChooser.setInitialDirectory(new File(buildFilePath(PROJECT_BASE_DIR)));
 
         Stage stage = (Stage) folderTextField4.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -244,42 +256,48 @@ public class NeuroRSegmentationController implements Initializable {
 
     @FXML
     private void handleButtonClick5(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Folders");
-
         Stage stage = (Stage) folderTextField5.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stage);
 
-        if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
+        String folderPath = null;
 
-            // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
-            if (!folderPath.endsWith(File.separator)) {
-                folderPath = folderPath + File.separator;
+        if (getCurrentServer() == null) {
+            //String.format() doesn't work if argument is null
+            String folderResult = getDirectory(stage, null);
+            if (folderResult != null) {
+                folderPath = String.format(folderResult);
             }
-
-            folderTextField5.setText(folderPath);
         }
+
+        else {
+            StringBuilder imagePath = new StringBuilder();
+            String[] pathArray = getCurrentServer().getPath().split("/");
+            for (int i = 1; i < pathArray.length - 1; i++) {
+                imagePath.append(pathArray[i] + "/");
+            }
+            String initialDirectory = imagePath.toString();
+            //String.format() doesn't work if argument is null
+            String folderResult = getDirectory(stage, initialDirectory);
+            if (folderResult != null) {
+                folderPath = String.format(folderResult);
+            }
+        }
+
+        if (folderPath != null && !folderPath.endsWith("/")) {
+            folderPath = folderPath + "/";
+        }
+        folderTextField5.setText(folderPath);
     }
 
     @FXML
     private void handleButtonClick6(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Folders");
-
         Stage stage = (Stage) folderTextField6.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stage);
+        String initialDirectory = PROJECT_BASE_DIR;
 
-        if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
-
-            // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
-            if (!folderPath.endsWith(File.separator)) {
-                folderPath = folderPath + File.separator;
-            }
-
-            folderTextField6.setText(folderPath);
+        String folderPath = getDirectory(stage, initialDirectory);
+        if (folderPath != null && !folderPath.endsWith("/")) {
+            folderPath = folderPath + "/";
         }
+        folderTextField6.setText(folderPath);
     }
 
     //ROI checkbox clicked -> disable or enable json_export_folder, ROI class names
@@ -301,22 +319,13 @@ public class NeuroRSegmentationController implements Initializable {
     //select json export folder
     @FXML
     private void handleButtonClick7(ActionEvent event) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Select Folders");
-
         Stage stage = (Stage) folderTextField7.getScene().getWindow();
-        File selectedDirectory = directoryChooser.showDialog(stage);
+        String folderPath = getDirectory(stage, PROJECT_BASE_DIR);
 
-        if (selectedDirectory != null) {
-            String folderPath = selectedDirectory.getAbsolutePath().replace('\\','/');
-
-            // Check if the last character is not a file separator ("/" for Unix or "\" for Windows), then append it.
-            if (!folderPath.endsWith(File.separator)) {
-                folderPath = folderPath + File.separator;
-            }
-
-            folderTextField7.setText(folderPath);
+        if (folderPath != null && !folderPath.endsWith("/")) {
+            folderPath = folderPath + "/";
         }
+        folderTextField7.setText(folderPath);
     }
 
     //define run button action
