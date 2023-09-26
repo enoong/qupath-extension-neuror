@@ -133,4 +133,4 @@ addObjects(deserializedAnnotations);
 // Resolve hierarchy
 resolveHierarchy()
 
-print "Done!"
+print "Done: " + import_filename;

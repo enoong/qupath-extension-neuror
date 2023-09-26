@@ -184,9 +184,10 @@ for (int i=0; i< classNames.size(); i++)
 //    getCurrentViewer().repaint()
 
    current_thresh++;
-   print "Done!"
-    
+
 }
+
+print "Done: " + currWSIName;
 
 
 Thread.sleep(100);
