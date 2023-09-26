@@ -78,6 +78,7 @@ public class NeuroRExtension implements QuPathExtension {
 		addPreference(qupath);
 		addMenuItem(qupath);
 		addMenuItem1(qupath);
+		addMenuItem2(qupath);
 	}
 
 	/**
@@ -144,6 +145,18 @@ public class NeuroRExtension implements QuPathExtension {
 		menuItem.setOnAction(e -> {
 			//code to call NeuroRApplication
 			neuroRApplication.showNeuroRObjectDetectionOptions();
+		});
+		menuItem.disableProperty().bind(enableExtensionProperty.not());
+		menu.getItems().add(menuItem);
+	}
+
+	private void addMenuItem2(QuPathGUI qupath) {
+		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
+		MenuItem menuItem = new MenuItem("NeuroR GUI");
+		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
+		menuItem.setOnAction(e -> {
+			//code to call NeuroRApplication
+			neuroRApplication.showNeuroRGUIOptions();
 		});
 		menuItem.disableProperty().bind(enableExtensionProperty.not());
 		menu.getItems().add(menuItem);

@@ -53,7 +53,31 @@ public class NeuroRApplication {
         stage.setScene(scene);
         stage.setTitle("NeuroR Object Detection");
         stage.show();
-    }    /*
+    }
+
+    void showNeuroRGUIOptions() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setController(new NeuroRGUIController(qupath));
+        loader.setLocation(NeuroRApplication.class.getResource("/qupath/lib/neuror/NeuroR_GUI.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // 선택 사항: 컨트롤러 인스턴스에 접근해야 하는 경우, loader에서 가져올 수 있습니다.
+        //NeuroRController controller = loader.getController();
+        NeuroRGUIController controller = loader.getController();
+
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("NeuroR GUI");
+        stage.show();
+
+    }
+
+    /*
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("NeuroR_Segmentation.fxml"));
