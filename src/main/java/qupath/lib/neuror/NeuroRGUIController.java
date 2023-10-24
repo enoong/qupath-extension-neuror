@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
 import static qupath.lib.scripting.QP.*;
 import static qupath.lib.scripting.QP.getCurrentServer;
 
+import static qupath.lib.neuror.NeuroRExtension.*;
+
 public class NeuroRGUIController implements Initializable {
 
     private QuPathGUI qupath;
@@ -85,8 +87,6 @@ public class NeuroRGUIController implements Initializable {
     @FXML
     private ChoiceBox<String> detNumGPUChoiceBox;
     @FXML
-    private TextField detROIClassNames;
-    @FXML
     private TextField detScriptName;
 
     @FXML //Environment Path Fields
@@ -101,49 +101,62 @@ public class NeuroRGUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set the default text for anacondaEnvPath
-        String defaultAnacondaEnvPath = NeuroRExtension.anacondaEnvPathProperty().get();
-        anacondaEnvPath.setText(defaultAnacondaEnvPath);
+        anacondaEnvPath.setText(anacondaEnvPathProperty.get());
         // Set the default text for pythonExecPath
-        String defaultPythonExecPath = NeuroRExtension.pythonExecPathProperty().get();
-        pythonExecPath.setText(defaultPythonExecPath);
+        pythonExecPath.setText(pythonExecPathProperty.get());
         // Set the default text for segExecPath
-        String defaultSegExecPath = NeuroRExtension.neurorSegmentationExecPathProperty().get();
-        segExecPath.setText(defaultSegExecPath);
+        segExecPath.setText(neurorSegmentationExecPathProperty.get());
         // Set the default text for detExecPath
-        String defaultDetExecPath = NeuroRExtension.neurorObjectDetectionExecPathProperty().get();
-        detExecPath.setText(defaultDetExecPath);
+        detExecPath.setText(neurorObjectDetectionExecPathProperty.get());
 
         // Add items to img_lib
         segImgLibChoiceBox.getItems().addAll("openslide", "bioformats", "dicom");
         detImgLibChoiceBox.getItems().addAll("openslide", "bioformats", "dicom");
         // Set a default value
-        segImgLibChoiceBox.setValue("openslide");
-        detImgLibChoiceBox.setValue("openslide");
+        segImgLibChoiceBox.setValue(segImgLibChoiceBoxProperty.get());
+        detImgLibChoiceBox.setValue(detImgLibChoiceBoxProperty.get());
 
         // Add items to level
         segLevelChoiceBox.getItems().addAll("0", "1", "2", "3");
         detLevelChoiceBox.getItems().addAll("0", "1", "2", "3");
         // Set a default value
-        segLevelChoiceBox.setValue("1");
-        detLevelChoiceBox.setValue("1");
+        segLevelChoiceBox.setValue(segLevelChoiceBoxProperty.get());
+        detLevelChoiceBox.setValue(detLevelChoiceBoxProperty.get());
 
         // Add items to num_gpus
         segNumGPUChoiceBox.getItems().addAll("1", "2");
         detNumGPUChoiceBox.getItems().addAll("1", "2");
         // Set a default value
-        segNumGPUChoiceBox.setValue("2");
-        detNumGPUChoiceBox.setValue("2");
+        segNumGPUChoiceBox.setValue(segNumGPUChoiceBoxProperty.get());
+        detNumGPUChoiceBox.setValue(detNumGPUChoiceBoxProperty.get());
 
         // Set a default value (overlap)
-        segOverlap.setText("0");
+        segOverlap.setText(segOverlapProperty.get());
 
         // Set a default value (batch_size)
-        segBatchSize.setText("128");
-        detBatchSize.setText("128");
+        segBatchSize.setText(segBatchSizeProperty.get());
+        detBatchSize.setText(detBatchSizeProperty.get());
 
         // Set a default value (className)
-        segClassNames.setText("Tumor");
-        detClassNames.setText("Tumor");
+        segClassNames.setText(segClassNamesProperty.get());
+        detClassNames.setText(detClassNamesProperty.get());
+
+        // Set a default value (everything else)
+        segPatchSize.setText(segPatchSizeProperty.get());
+        detPatchSize.setText(detPatchSizeProperty.get());
+        segROICheckBox.setSelected(segROICheckBoxProperty.get());
+        if (segROICheckBox.isSelected()) {
+            segJsonExportPath.setDisable(false);
+            segJsonExportPathButton.setDisable(false);
+            segROIClassNames.setDisable(false);
+        }
+        segJsonExportPath.setText(segJsonExportPathProperty.get());
+        segROIClassNames.setText(segROIClassNamesProperty.get());
+        segScriptName.setText(segScriptNameProperty.get());
+        detJsonExportPath.setText(detJsonExportPathProperty.get());
+        detSelectedClassNames.setText(detSelectedClassNamesProperty.get());
+        detScriptName.setText(detScriptNameProperty.get());
+
 
         // Tried to get dialog to resize when changing tabs
         // -- doesn't seem to work, apparently..
@@ -151,7 +164,6 @@ public class NeuroRGUIController implements Initializable {
                 new ChangeListener<Tab>() {
                     @Override
                     public void changed(ObservableValue<? extends Tab> observableValue, Tab oldTab, Tab newTab) {
-                        System.out.println("test");
                         tabPane.getScene().getWindow().sizeToScene();
                     }
                 }
@@ -220,7 +232,7 @@ public class NeuroRGUIController implements Initializable {
         Stage stage = (Stage) segExecPath.getScene().getWindow();
         String filePath = getFile(stage, null);
 
-        NeuroRExtension.neurorSegmentationExecPath.setValue(filePath);
+        NeuroRExtension.neurorSegmentationExecPathProperty.setValue(filePath);
         segExecPath.setText(filePath);
     }
 
@@ -229,7 +241,7 @@ public class NeuroRGUIController implements Initializable {
         Stage stage = (Stage) detExecPath.getScene().getWindow();
         String filePath = getFile(stage, null);
 
-        NeuroRExtension.neurorObjectDetectionExecPath.setValue(filePath);
+        NeuroRExtension.neurorObjectDetectionExecPathProperty.setValue(filePath);
         detExecPath.setText(filePath);
     }
 
@@ -346,6 +358,7 @@ public class NeuroRGUIController implements Initializable {
     //define run button action
     @FXML
     private void segCreateScriptButtonClick(ActionEvent event) {
+        saveValuesToProperty();
         File file = new File(saveToSegmentationGroovyScript());
         qupath.getScriptEditor().showScript(file);
     }
@@ -353,6 +366,7 @@ public class NeuroRGUIController implements Initializable {
     //define generateScriptName button action
     @FXML
     private void segGenerateScriptNameButtonClick(ActionEvent event) {
+        saveValuesToProperty();
         updateSegmentationScriptName();
     }
 
@@ -396,7 +410,7 @@ public class NeuroRGUIController implements Initializable {
 
             // run for whole image
             if (segROICheckBox.isSelected() == false) {
-                String segmentation_script = new String(NeuroRSegmentationController.class
+                String segmentation_script = new String(NeuroRExtension.class
                         .getResourceAsStream("/qupath/lib/neuror/run_segmentation_roi.groovy").readAllBytes());
 
 
@@ -422,7 +436,7 @@ public class NeuroRGUIController implements Initializable {
             }
             //ROI class names specified
             else {
-                String segmentation_script = new String(NeuroRSegmentationController.class
+                String segmentation_script = new String(NeuroRExtension.class
                         .getResourceAsStream("/qupath/lib/neuror/run_segmentation_roi.groovy").readAllBytes());
 
                 String ROIClassNamesText = segROIClassNames.getText();
@@ -572,6 +586,7 @@ public class NeuroRGUIController implements Initializable {
 
     @FXML
     private void detCreateScriptButtonClick(ActionEvent event) {
+        saveValuesToProperty();
         File file = new File(saveToDetectionGroovyScript());
         qupath.getScriptEditor().showScript(file);
     }
@@ -579,6 +594,7 @@ public class NeuroRGUIController implements Initializable {
     //define generateScriptName button action
     @FXML
     private void detGenerateScriptNameButtonClick(ActionEvent event) {
+        saveValuesToProperty();
         updateDetectionScriptName();
     }
 
@@ -600,7 +616,7 @@ public class NeuroRGUIController implements Initializable {
     private String saveToDetectionGroovyScript() {
         try {
 
-            String detection_script = new String(NeuroRObjectDetectionController.class
+            String detection_script = new String(NeuroRExtension.class
                     .getResourceAsStream("/qupath/lib/neuror/run_detection.groovy").readAllBytes());
 
             //Edit class names into appropriate string
@@ -661,5 +677,26 @@ public class NeuroRGUIController implements Initializable {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private void saveValuesToProperty() {
+        segImgLibChoiceBoxProperty.setValue(segImgLibChoiceBox.getValue());
+        segPatchSizeProperty.setValue(segPatchSize.getText());
+        segLevelChoiceBoxProperty.setValue(segLevelChoiceBox.getValue());
+        segOverlapProperty.setValue(segOverlap.getText());
+        segBatchSizeProperty.setValue(segBatchSize.getText());
+        segClassNamesProperty.setValue(segClassNames.getText());
+        segNumGPUChoiceBoxProperty.setValue(segNumGPUChoiceBox.getValue());
+        segROICheckBoxProperty.setValue(segROICheckBox.isSelected());
+        segJsonExportPathProperty.setValue(segJsonExportPath.getText());
+        segROIClassNamesProperty.setValue(segROIClassNames.getText());
+        segScriptNameProperty.setValue(segScriptName.getText());
+        detJsonExportPathProperty.setValue(detJsonExportPath.getText());
+        detImgLibChoiceBoxProperty.setValue(detImgLibChoiceBox.getValue());
+        detLevelChoiceBoxProperty.setValue(detLevelChoiceBox.getValue());
+        detClassNamesProperty.setValue(detClassNames.getText());
+        detSelectedClassNamesProperty.setValue(detSelectedClassNames.getText());
+        detNumGPUChoiceBoxProperty.setValue(detNumGPUChoiceBox.getValue());
+        detScriptNameProperty.setValue(detScriptName.getText());
     }
 }

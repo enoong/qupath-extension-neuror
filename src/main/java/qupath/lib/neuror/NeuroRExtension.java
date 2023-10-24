@@ -48,25 +48,11 @@ public class NeuroRExtension implements QuPathExtension {
 	static StringProperty pythonExecPathProperty = PathPrefs.createPersistentPreference(
 			"pythonExecPath", "D:/Anaconda3/envs/qupath/python" );
 
-	static StringProperty neurorSegmentationExecPath = PathPrefs.createPersistentPreference(
+	static StringProperty neurorSegmentationExecPathProperty = PathPrefs.createPersistentPreference(
 			"neurorSegmentationExecPath", "" );
 
-	static StringProperty neurorObjectDetectionExecPath = PathPrefs.createPersistentPreference(
+	static StringProperty neurorObjectDetectionExecPathProperty = PathPrefs.createPersistentPreference(
 			"neurorObjectDetectionExecPath", "" );
-
-	public static StringProperty anacondaEnvPathProperty() {
-		return anacondaEnvPathProperty;
-	}
-
-	public static StringProperty pythonExecPathProperty() {
-		return pythonExecPathProperty;
-	}
-
-	public static StringProperty neurorSegmentationExecPathProperty() {
-		return neurorSegmentationExecPath;
-	}
-
-	public static StringProperty neurorObjectDetectionExecPathProperty() { return neurorObjectDetectionExecPath; }
 
 	@Override
 	public void installExtension(QuPathGUI qupath) {
@@ -77,8 +63,6 @@ public class NeuroRExtension implements QuPathExtension {
 		isInstalled = true;
 		addPreference(qupath);
 		addMenuItem(qupath);
-		addMenuItem1(qupath);
-		addMenuItem2(qupath);
 	}
 
 	/**
@@ -107,14 +91,14 @@ public class NeuroRExtension implements QuPathExtension {
 				"Set python executable path (e.g. D:/Anaconda3/envs/qupath/python)"
 		);
 		qupath.getPreferencePane().addPropertyPreference(
-				neurorSegmentationExecPath,
+				neurorSegmentationExecPathProperty,
 				String.class,
 				"NeuroR Segmentation executable path",
 				EXTENSION_NAME,
 				"Set NeuroR Segmentation executable path"
 		);
 		qupath.getPreferencePane().addPropertyPreference(
-				neurorObjectDetectionExecPath,
+				neurorObjectDetectionExecPathProperty,
 				String.class,
 				"NeuroR Object Detection executable path",
 				EXTENSION_NAME,
@@ -127,30 +111,6 @@ public class NeuroRExtension implements QuPathExtension {
 	 * @param qupath
 	 */
 	private void addMenuItem(QuPathGUI qupath) {
-		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
-		MenuItem menuItem = new MenuItem("Segmentation");
-		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
-		menuItem.setOnAction(e -> {
-			//code to call NeuroRApplication
-			neuroRApplication.showNeuroRSegmentationOptions();
-		});
-		menuItem.disableProperty().bind(enableExtensionProperty.not());
-		menu.getItems().add(menuItem);
-	}
-
-	private void addMenuItem1(QuPathGUI qupath) {
-		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
-		MenuItem menuItem = new MenuItem("Object Detection");
-		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
-		menuItem.setOnAction(e -> {
-			//code to call NeuroRApplication
-			neuroRApplication.showNeuroRObjectDetectionOptions();
-		});
-		menuItem.disableProperty().bind(enableExtensionProperty.not());
-		menu.getItems().add(menuItem);
-	}
-
-	private void addMenuItem2(QuPathGUI qupath) {
 		var menu = qupath.getMenu("Extensions>" + EXTENSION_NAME, true);
 		MenuItem menuItem = new MenuItem("NeuroR GUI");
 		NeuroRApplication neuroRApplication = new NeuroRApplication(qupath);
@@ -176,5 +136,47 @@ public class NeuroRExtension implements QuPathExtension {
 	public Version getQuPathVersion() {
 		return EXTENSION_QUPATH_VERSION;
 	}
+
+	//Create persistent properties for every item
+	static StringProperty segImgLibChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"segImgLibChoiceBoxProperty", "" );
+	static StringProperty segPatchSizeProperty = PathPrefs.createPersistentPreference(
+			"segPatchSizeProperty", "" );
+	static StringProperty segLevelChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"segLevelChoiceBoxProperty", "1" );
+	static StringProperty segOverlapProperty = PathPrefs.createPersistentPreference(
+			"segOverlapProperty", "32" );
+	static StringProperty segBatchSizeProperty = PathPrefs.createPersistentPreference(
+			"segBatchSizeProperty", "128" );
+	static StringProperty segClassNamesProperty = PathPrefs.createPersistentPreference(
+			"segClassNamesProperty", "" );
+	static StringProperty segNumGPUChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"segNumGPUChoiceBoxProperty", "2" );
+	static BooleanProperty segROICheckBoxProperty = PathPrefs.createPersistentPreference(
+			"segROICheckBoxProperty", false );
+	static StringProperty segJsonExportPathProperty = PathPrefs.createPersistentPreference(
+			"segJsonExportPathProperty", "" );
+	static StringProperty segROIClassNamesProperty = PathPrefs.createPersistentPreference(
+			"segROIClassNamesProperty", "" );
+	static StringProperty segScriptNameProperty = PathPrefs.createPersistentPreference(
+			"segScriptNameProperty", "" );
+	static StringProperty detJsonExportPathProperty = PathPrefs.createPersistentPreference(
+			"detJsonExportPathProperty", "" );
+	static StringProperty detImgLibChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"detImgLibChoiceBoxProperty", "" );
+	static StringProperty detPatchSizeProperty = PathPrefs.createPersistentPreference(
+			"detPatchSizeProperty", "" );
+	static StringProperty detLevelChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"detLevelChoiceBoxProperty", "1" );
+	static StringProperty detBatchSizeProperty = PathPrefs.createPersistentPreference(
+			"detBatchSizeProperty", "128" );
+	static StringProperty detClassNamesProperty = PathPrefs.createPersistentPreference(
+			"detClassNamesProperty", "" );
+	static StringProperty detSelectedClassNamesProperty = PathPrefs.createPersistentPreference(
+			"segImgLibChoiceProperty", "" );
+	static StringProperty detNumGPUChoiceBoxProperty = PathPrefs.createPersistentPreference(
+			"detNumGPUChoiceBoxProperty", "2" );
+	static StringProperty detScriptNameProperty = PathPrefs.createPersistentPreference(
+			"segImgLibChoiceProperty", "" );
 
 }
