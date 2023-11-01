@@ -9,14 +9,12 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<VBox prefWidth="640.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <TabPane fx:id="tabPane">
          <tabs>
@@ -29,7 +27,7 @@
                               <GridPane>
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.33334350585938" minWidth="10.0" prefWidth="116.33334350585938" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.33331298828125" minWidth="10.0" prefWidth="406.6666564941406" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="406.6666564941406" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.33331298828125" minWidth="0.0" prefWidth="47.0" />
                                 </columnConstraints>
                                 <rowConstraints>
@@ -59,13 +57,13 @@
                               <GridPane alignment="TOP_CENTER">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.33331298828125" minWidth="10.0" prefWidth="79.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.5" minWidth="10.0" prefWidth="117.5" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="117.5" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="78.33331298828125" minWidth="7.666656494140625" prefWidth="13.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="79.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="64.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="64.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="0.0" prefWidth="14.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.6666259765625" minWidth="10.0" prefWidth="90.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.5" minWidth="10.0" prefWidth="114.5" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="114.5" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -74,7 +72,7 @@
                                 </rowConstraints>
                                  <children>
                                     <Label text="img_lib" />
-                                    <ChoiceBox fx:id="segImgLibChoiceBox" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" />
+                                    <ChoiceBox fx:id="segImgLibChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" />
                                     <Label text="patch_size" GridPane.rowIndex="1" />
                                     <TextField fx:id="segPatchSize" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <Label text="level" GridPane.rowIndex="2">
@@ -82,7 +80,7 @@
                                           <Tooltip text="which level to extract segmentation from (choosing 0 may be slow)" />
                                        </tooltip>
                                     </Label>
-                                    <ChoiceBox fx:id="segLevelChoiceBox" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="segLevelChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label text="overlap" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <TextField fx:id="segOverlap" prefHeight="23.0" prefWidth="87.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                                     <Label text="batch_size" GridPane.columnIndex="3" GridPane.rowIndex="2">
@@ -94,7 +92,7 @@
                                     <Label text="classNames" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                                     <TextField fx:id="segClassNames" prefHeight="25.0" prefWidth="91.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                     <Label text="num_gpus" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                                    <ChoiceBox fx:id="segNumGPUChoiceBox" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="segNumGPUChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
@@ -107,7 +105,7 @@
                               <GridPane>
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="278.0" minWidth="10.0" prefWidth="128.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="497.0" minWidth="10.0" prefWidth="404.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="404.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="465.0" minWidth="10.0" prefWidth="50.0" />
                                 </columnConstraints>
                                 <rowConstraints>
@@ -138,7 +136,7 @@
                               <GridPane>
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="279.0" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="470.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="470.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -194,155 +192,139 @@
                      <children>
                         <VBox prefWidth="100.0">
                            <children>
-                              <AnchorPane prefWidth="200.0">
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.33334350585938" minWidth="10.0" prefWidth="116.33334350585938" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="406.6666564941406" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.33331298828125" minWidth="0.0" prefWidth="47.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <GridPane>
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.33334350585938" minWidth="10.0" prefWidth="116.33334350585938" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.33331298828125" minWidth="10.0" prefWidth="406.6666564941406" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.33331298828125" minWidth="0.0" prefWidth="47.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="model_path" />
-                                          <Label text="image_path" GridPane.rowIndex="1" />
-                                          <Label text="output_path" GridPane.rowIndex="2" />
-                                          <Label prefHeight="14.0" prefWidth="105.0" text="json_export_folder" GridPane.rowIndex="3" />
-                                          <TextField fx:id="detModelPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" />
-                                          <TextField fx:id="detImagePath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <TextField fx:id="detOutputPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <TextField fx:id="detJsonExportPath" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Button fx:id="detModelPathButton" mnemonicParsing="false" onAction="#detModelPathButtonClick" text="path" GridPane.columnIndex="2" />
-                                          <Button fx:id="detImagePathButton" mnemonicParsing="false" onAction="#detImagePathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                          <Button fx:id="detOutputPathButton" mnemonicParsing="false" onAction="#detOutputPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                          <Button fx:id="detJsonExportPathButton" mnemonicParsing="false" onAction="#detJsonExportPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
-                                       </padding>
-                                    </GridPane>
+                                    <Label text="model_path" />
+                                    <Label text="image_path" GridPane.rowIndex="1" />
+                                    <Label text="output_path" GridPane.rowIndex="2" />
+                                    <Label prefHeight="14.0" prefWidth="105.0" text="json_export_folder" GridPane.rowIndex="3" />
+                                    <TextField fx:id="detModelPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" />
+                                    <TextField fx:id="detImagePath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="detOutputPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="detJsonExportPath" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button fx:id="detModelPathButton" mnemonicParsing="false" onAction="#detModelPathButtonClick" text="path" GridPane.columnIndex="2" />
+                                    <Button fx:id="detImagePathButton" mnemonicParsing="false" onAction="#detImagePathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Button fx:id="detOutputPathButton" mnemonicParsing="false" onAction="#detOutputPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Button fx:id="detJsonExportPathButton" mnemonicParsing="false" onAction="#detJsonExportPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                  </children>
-                              </AnchorPane>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
                            </children>
                         </VBox>
                         <VBox prefWidth="100.0">
                            <children>
-                              <AnchorPane prefWidth="200.0">
+                              <GridPane alignment="TOP_CENTER">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.33331298828125" minWidth="10.0" prefWidth="79.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="103.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="78.33331298828125" minWidth="7.666656494140625" prefWidth="20.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="63.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="73.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="0.0" prefWidth="11.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.6666259765625" minWidth="10.0" prefWidth="121.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="102.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <GridPane alignment="TOP_CENTER">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="89.33331298828125" minWidth="10.0" prefWidth="79.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="117.5" minWidth="10.0" prefWidth="103.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="78.33331298828125" minWidth="7.666656494140625" prefWidth="20.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="63.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="73.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="0.0" prefWidth="11.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.6666259765625" minWidth="10.0" prefWidth="121.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.5" minWidth="10.0" prefWidth="102.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <Label text="img_lib" />
-                                          <ChoiceBox fx:id="detImgLibChoiceBox" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" />
-                                          <Label text="patch_size" GridPane.rowIndex="1" />
-                                          <TextField fx:id="detPatchSize" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label text="level" GridPane.rowIndex="2">
-                                             <tooltip>
-                                                <Tooltip text="which level to extract segmentation from (choosing 0 may be slow)" />
-                                             </tooltip>
-                                          </Label>
-                                          <ChoiceBox fx:id="detLevelChoiceBox" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label text="batch_size" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                             <tooltip>
-                                                <Tooltip text="The unit of the number of images during inference (e.g. 4, 16, 32, 64..)" />
-                                             </tooltip>
-                                          </Label>
-                                          <TextField fx:id="detBatchSize" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                                          <Label text="classNames" GridPane.columnIndex="6" />
-                                          <TextField fx:id="detClassNames" prefHeight="25.0" prefWidth="91.0" GridPane.columnIndex="7" />
-                                          <Label prefHeight="14.0" prefWidth="108.0" text="selectedClassNames" GridPane.columnIndex="6" GridPane.rowIndex="1">
-                                             <tooltip>
-                                                <Tooltip text="Detects from annotations with entered class names. Leave blank to detect from whole image." />
-                                             </tooltip>
-                                          </Label>
-                                          <TextField fx:id="detSelectedClassNames" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                                          <Label text="num_gpus" GridPane.columnIndex="6" GridPane.rowIndex="2" />
-                                          <ChoiceBox fx:id="detNumGPUChoiceBox" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
-                                       </padding>
-                                    </GridPane>
+                                    <Label text="img_lib" />
+                                    <ChoiceBox fx:id="detImgLibChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="122.0" GridPane.columnIndex="1" />
+                                    <Label text="patch_size" GridPane.rowIndex="1" />
+                                    <TextField fx:id="detPatchSize" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="level" GridPane.rowIndex="2">
+                                       <tooltip>
+                                          <Tooltip text="which level to extract segmentation from (choosing 0 may be slow)" />
+                                       </tooltip>
+                                    </Label>
+                                    <ChoiceBox fx:id="detLevelChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="batch_size" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                       <tooltip>
+                                          <Tooltip text="The unit of the number of images during inference (e.g. 4, 16, 32, 64..)" />
+                                       </tooltip>
+                                    </Label>
+                                    <TextField fx:id="detBatchSize" prefHeight="23.0" prefWidth="71.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                                    <Label text="classNames" GridPane.columnIndex="6" />
+                                    <TextField fx:id="detClassNames" prefHeight="25.0" prefWidth="91.0" GridPane.columnIndex="7" />
+                                    <Label prefHeight="14.0" prefWidth="108.0" text="selectedClassNames" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                                       <tooltip>
+                                          <Tooltip text="Detects from annotations with entered class names. Leave blank to detect from whole image." />
+                                       </tooltip>
+                                    </Label>
+                                    <TextField fx:id="detSelectedClassNames" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                    <Label text="num_gpus" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="detNumGPUChoiceBox" maxWidth="1.7976931348623157E308" prefHeight="23.0" prefWidth="119.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                                  </children>
-                              </AnchorPane>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
                            </children>
                         </VBox>
                         <VBox prefWidth="100.0">
                            <children>
-                              <AnchorPane prefWidth="200.0">
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="279.0" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="470.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
                                  <children>
-                                    <GridPane>
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="279.0" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="470.0" minWidth="10.0" prefWidth="470.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <children>
-                                          <TextField fx:id="detScriptName" prefHeight="22.0" prefWidth="406.0" GridPane.columnIndex="1" />
-                                          <Label text="Script name: ">
-                                             <tooltip>
-                                                <Tooltip text="Script will be saved in project_dir/scripts" />
-                                             </tooltip>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
-                                       </padding>
-                                    </GridPane>
+                                    <TextField fx:id="detScriptName" prefHeight="22.0" prefWidth="406.0" GridPane.columnIndex="1" />
+                                    <Label text="Script name: ">
+                                       <tooltip>
+                                          <Tooltip text="Script will be saved in project_dir/scripts" />
+                                       </tooltip>
+                                    </Label>
                                  </children>
-                              </AnchorPane>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
                            </children>
                         </VBox>
                         <VBox prefWidth="100.0">
                            <children>
-                              <AnchorPane prefWidth="200.0">
+                              <GridPane alignment="CENTER">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </padding>
                                  <children>
-                                    <GridPane alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                       <padding>
-                                          <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
-                                       </padding>
-                                       <children>
-                                          <Button fx:id="detGenerateScriptNameButton" mnemonicParsing="false" onAction="#detGenerateScriptNameButtonClick" prefHeight="30.0" prefWidth="172.0" text="Generate script name" GridPane.halignment="CENTER">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </Button>
-                                          <Button fx:id="detCreateScriptButton" mnemonicParsing="false" onAction="#detCreateScriptButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                                       </children>
-                                       <opaqueInsets>
-                                          <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
-                                       </opaqueInsets>
-                                    </GridPane>
+                                    <Button fx:id="detGenerateScriptNameButton" mnemonicParsing="false" onAction="#detGenerateScriptNameButtonClick" prefHeight="30.0" prefWidth="172.0" text="Generate script name" GridPane.halignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="detCreateScriptButton" mnemonicParsing="false" onAction="#detCreateScriptButtonClick" prefHeight="44.0" prefWidth="187.0" text="Create NeuroR script!" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                                  </children>
-                              </AnchorPane>
+                                 <opaqueInsets>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </opaqueInsets>
+                              </GridPane>
                            </children>
                         </VBox>
                      </children>
@@ -351,37 +333,44 @@
             </Tab>
             <Tab closable="false" text="Environment Paths">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <VBox>
                      <children>
-                        <GridPane layoutX="36.0" layoutY="14.0" prefWidth="569.0">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.33334350585938" minWidth="10.0" prefWidth="116.33334350585938" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="468.33331298828125" minWidth="10.0" prefWidth="406.6666564941406" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.33331298828125" minWidth="0.0" prefWidth="47.0" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                           </rowConstraints>
+                        <VBox>
                            <children>
-                              <Label text="Anaconda" />
-                              <Label text="Python" GridPane.rowIndex="1" />
-                              <Label text="Segmentation" GridPane.rowIndex="2" />
-                              <Label text="Object Detection" GridPane.rowIndex="3" />
-                              <TextField fx:id="anacondaEnvPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" />
-                              <TextField fx:id="pythonExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField fx:id="segExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Button fx:id="anacondaEnvPathButton" mnemonicParsing="false" onAction="#anacondaEnvPathButtonClick" text="path" GridPane.columnIndex="2" />
-                              <Button fx:id="pythonExecPathButton" mnemonicParsing="false" onAction="#pythonExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                              <Button fx:id="segExecPathButton" mnemonicParsing="false" onAction="#segExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                              <TextField fx:id="detExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Button fx:id="detExecPathButton" mnemonicParsing="false" onAction="#detExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <GridPane prefWidth="569.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="155.33334350585938" minWidth="10.0" prefWidth="116.33334350585938" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="406.6666564941406" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.33331298828125" minWidth="0.0" prefWidth="47.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Label text="Anaconda" />
+                                    <Label text="Python" GridPane.rowIndex="1" />
+                                    <Label text="Segmentation" GridPane.rowIndex="2" />
+                                    <Label text="Object Detection" GridPane.rowIndex="3" />
+                                    <TextField fx:id="anacondaEnvPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" />
+                                    <TextField fx:id="pythonExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="segExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button fx:id="anacondaEnvPathButton" mnemonicParsing="false" onAction="#anacondaEnvPathButtonClick" text="path" GridPane.columnIndex="2" />
+                                    <Button fx:id="pythonExecPathButton" mnemonicParsing="false" onAction="#pythonExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                    <Button fx:id="segExecPathButton" mnemonicParsing="false" onAction="#segExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <TextField fx:id="detExecPath" prefHeight="23.0" prefWidth="344.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Button fx:id="detExecPathButton" mnemonicParsing="false" onAction="#detExecPathButtonClick" text="path" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" right="35.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
                            </children>
-                        </GridPane>
+                        </VBox>
                      </children>
-                  </AnchorPane>
+                  </VBox>
               </content>
             </Tab>
          </tabs>
