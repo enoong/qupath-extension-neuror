@@ -7,6 +7,8 @@ plugins {
   id 'com.github.johnrengelman.shadow' version '7.1.2'
   // Include this plugin to avoid downloading JavaCPP dependencies for all platforms
   id 'org.bytedeco.gradle-javacpp-platform'
+  // Include JavaFX dependencies
+  id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 // TODO: Change the module name
@@ -45,6 +47,9 @@ dependencies {
     // https://github.com/qupath/qupath/blob/main/gradle/libs.versions.toml
     // See https://docs.gradle.org/current/userguide/platforms.html
     shadow libs.slf4j
+
+    // JavaFX-based extension -> remove later when switching to Swing?
+    shadow libs.qupath.fxtras
 
     // If you aren't using Groovy, this can be removed
     shadow libs.bundles.groovy
