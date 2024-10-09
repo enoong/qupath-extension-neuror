@@ -2,7 +2,9 @@ package qupath.lib.neuror;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import qupath.lib.common.Version;
@@ -29,7 +31,7 @@ public class NeuroRExtension implements QuPathExtension {
 	 * QuPath version that the extension is designed to work with.
 	 * This allows QuPath to inform the user if it seems to be incompatible.
 	 */
-	private final static Version EXTENSION_QUPATH_VERSION = Version.parse("v0.4.3");
+	private final static Version EXTENSION_QUPATH_VERSION = Version.parse("v0.5.1");
 
 	/**
 	 * Flag whether the extension is already installed (might not be needed... but we'll do it anyway)
@@ -121,6 +123,7 @@ public class NeuroRExtension implements QuPathExtension {
 		menuItem.disableProperty().bind(enableExtensionProperty.not());
 		menu.getItems().add(menuItem);
 	}
+
 
 	@Override
 	public String getName() {
