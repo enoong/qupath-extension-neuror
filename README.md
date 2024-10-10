@@ -1,131 +1,40 @@
-# Developing in IDE alongside qupath
-As mentioned below ("Set up in an IDE"), it may be convenient to import [qupath](https://github.com/qupath/qupath) alongside this extension. If doing so, this extension directory and the qupath directory should be separate, as below.
-```
-BaseFolder/qupath
-BaseFolder/extension
-```
-It is also necessary to make sure the targeted QuPath version is the same in the extension's and qupath's `settings.gradle`.
-This extension's `settings.gradle` states `gradle.ext.qupathVersion = "0.4.3"`, while QuPath's is `gradle.ext.qupathVersion = "0.5.0-SNAPSHOT"` by default.
+# NeuroR QuPath Extension
 
-In summary, do the following
-1. Make sure the qupath and extension directories are separate (e.g. D:/qupath, D:/extension)
-2. In `settings.gradle` in the qupath folder, edit `gradle.ext.qupathVersion` to match that of the extension folder
-3. add `includeFlat = '<extensionname>'` to qupath's settings.gradle
+This repository contains a [QuPath](https://qupath.github.io) extension designed to simplify the deployment of [Neuro-R](https://www.neuro-cle.com/) within QuPath, enhancing image analysis workflows for pathology research.
 
+## Installation
 
+To install this extension, simply drag and drop the latest release into an open QuPath window, or place it in your QuPath extensions folder.
 
-# QuPath extension template
+## Usage
 
-This repo contains a template and instructions to help create a new extension for [QuPath](https://qupath.github.io).
+1. Configure environment paths under Extensions > NeuroR Extension > Environments.
+2. Set your preferences for segmentation, object detection, and classification in Extensions > NeuroR Extension > Segmentation/Object Detection/Classification.
+3. Click the 'Generate' button next to Script Name to create a script, then edit the generated script name as needed.
+4. Press the 'Create Script!' button to open the Script Editor with your custom script.
+5. Start inference by pressing the 'Run' button at the bottom right of the Script Editor.
 
-It already contains two minimal extensions, so the first task is to make sure that they work.
-Then, it's a matter of customizing the code to make it more useful.
+## Setting Up for Development
 
-> There are two extensions to show that you can use either Java or Groovy.
+### Using IntelliJ IDEA
 
-## Build the extension
+1. Clone this repository and open it in IntelliJ IDEA.
+2. Clone QuPath's repository, then use "Link Gradle Project" to import the QuPath directory.
+   ![idea_link_gradle_project.png](idea_link_gradle_project.png)
+3. Add the line `includeFlat 'qupath-extension-neuror'` to `qupath/settings.gradle`.
+4. Ensure that the value of `gradle.ext.qupathVersion` in `qupath/settings.gradle` is equal to the value specified by in `qupath-extension-neuror/settings.gradle`. 
+5. Create a Run Configuration to launch QuPath.
+   ![idea_run_configuration.png](idea_run_configuration.png)
 
-Building the extension with Gradle should be pretty easy - you don't even need to install Gradle separately, because the 
-[Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) will take care of that.
+With these steps, you should be able to see this extension automatically loaded into QuPath when running it in IntelliJ IDEA.
 
-Open a command prompt, navigate to where the code lives, and use
-```bash
-gradlew build
-```
+### Building JARs
 
-The built extension should be found inside `build/libs`.
-You can drag this onto QuPath to install it.
-You'll be prompted to create a user directory if you don't already have one.
+1. Open the terminal in IDEA, then `cd` to the extension directory.
+2. Run `gradlew build`.\
 
-The minimal extension here doesn't do much, but it should at least install a new command under the 'Extensions' menu in 
-QuPath.
+Created JARs will be in `qupath-extension-neuror/build/libs/`.
 
-> In case your extension contains external dependencies beyond what QuPath already includes, you can create a 
-> [single jar file](https://imperceptiblethoughts.com/shadow/introduction/#benefits-of-shadow) that bundles these along 
-> with your extension by using
-> ```bash
-> gradlew shadowJar
-> ```
-> If you don't do that, you'll need to drag *all* the extra dependences onto QuPath to install them as well.
+### Troubleshooting
 
-
-## Set up in an IDE (optional)
-
-During development, things are likely to be much easier if you work within an IDE.
-
-QuPath itself is developed using IntelliJ, and you can import the extension template there.
-
-However, for development and testing, it can help to import QuPath *and* the extension and have them in your IDE side-by-side.
-
-In IntelliJ, you can do this in a few steps:
-* Get QuPath's source code, as described at https://qupath.readthedocs.io/en/0.4/docs/reference/building.html
-* Store your extension code in a directory *beside* QuPath's code. So it should be located next to the `qupath` code directory.
-* Import QuPath into IntelliJ as a Gradle project (you don't need to import the extension yet!)
-   * See https://www.jetbrains.com/help/idea/work-with-gradle-projects.html
-* Within `qupath/settings.gradle` add the line `includeFlat 'your-extension-code-directory'` (updating the code directory as needed)
-* Refresh the Gradle project in IntelliJ, and your extension code should appear
-* Create a [Run configuration](https://www.jetbrains.com/help/idea/run-debug-configuration.html) in IntelliJ to launch QuPath. An example of how that looks is shown below:
-
-<img src="qupath-intellij.png" alt="QuPath run configuration in IntelliJ" width="428" />
-
-Now when you run QuPath from IntelliJ, your extension should (hopefully) be found - there's no need to add it by drag & drop.
-
-## Customize the extension
-
-There are a few fixed steps to customizing the extension, and then the main creative part where you add your own code.
-
-### Update `settings.gradle`
-
-Open `settings.gradle` and check the comment lines flagged with `\\TODO`.
-These point you towards parts you may well need to change.
-
-### Update `build.gradle`
-
-Open `build.gradle` and follow a similar process to with `settings.gradle`, to update the bits flagged with `\\TODO`.
-
-### Create the extension Java or Groovy file(s)
-
-For the extension to work, you need to create at least one file that extends `qupath.lib.gui.extensions.QuPathExtension`.
-
-There are two examples in the template, in two languages:
-* **Java:** `qupath.ext.template.DemoExtension.java`.
-* **Groovy:** `qupath.ext.template.DemoGroovyExtension.java`.
-
-You can pick the one that corresponds to the language you want to use, and delete the other.
-
-Then take your chosen file and rename it, edit it, move it to another package... basically, make it your own.
-
-> Please **don't neglect this step!** 
-> If you do, there's a chance of multiple extensions being created with the same class names... and causing confusion later.
-
-### Update the `META-INF/services` file
-
-For QuPath to *find* the extension later, the full class name needs to be available in `resources/META-INFO/services/qupath.lib.gui.extensions.QuPathExtensions`.
-
-So remember to edit that file to include the class name that you actually used for your extension.
-
-### Specify your license
-
-Add a license file to your GitHub repo so that others know what they can and can't do with your extension.
-
-This should be compatible with QuPath's license -- see https://github.com/qupath/qupath
-
-### Replace this readme
-
-Don't forget to replace the contents of this readme with your own!
-
-
-## Getting help
-
-For questions about QuPath and/or creating new extensions, please use the forum at https://forum.image.sc/tag/qupath
-
-------
-
-## License
-
-This is just a template, you're free to use it however you like.
-You can treat the contents of *this repository only* as being under [the Unlicense](https://unlicense.org) (except for the Gradle wrapper, which has its own license included).
-
-If you use it to create a new QuPath extension, I'd strongly encourage you to select a suitable open-source license for the extension.
-
-Note that *QuPath itself* is available under the GPL, so you do have to abide by those terms: see https://github.com/qupath/qupath for more.
+If you encounter `java.lang.ClassNotFoundException: org.slf4j.LoggerFactory` error while trying to run QuPath, try restarting IDEA.
