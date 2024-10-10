@@ -1,4 +1,6 @@
 import qupath.lib.io.GsonTools
+import qupath.lib.common.GeneralTools
+
 
 // --- SET THESE PARAMETERS -----------------------------------------------------------
 

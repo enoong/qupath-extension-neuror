@@ -1,4 +1,11 @@
-import static qupath.lib.gui.scripting.QPEx.*
+import qupath.lib.gui.scripting.QPEx.*
+import qupath.lib.objects.PathObjectTools
+import qupath.lib.io.GsonTools
+import qupath.lib.common.GeneralTools
+import qupath.opencv.ml.pixel.PixelClassifierTools
+
+
+
 
 // --- SET THESE PARAMETERS -----------------------------------------------------------
 
