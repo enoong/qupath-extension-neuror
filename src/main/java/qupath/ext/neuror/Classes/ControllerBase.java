@@ -70,7 +70,7 @@ public class ControllerBase {
         });
     }
 
-    protected void handleDirectoryPath(Button button, TextField textField, StringProperty stringProperty) {
+    protected void handleDirectoryPath(Button button, TextField textField, StringProperty stringProperty, Boolean initialDirectoryIsProjectDir) {
         textField.setText(stringProperty.getValue());
 
         textField.textProperty().addListener((observable, oldText, newText) -> {
@@ -80,7 +80,12 @@ public class ControllerBase {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String selectedPath = getDirectory(stringProperty.getValue()) + "/";
+                String selectedPath = "";
+                if (!initialDirectoryIsProjectDir) {
+                    selectedPath = getDirectory(stringProperty.getValue()) + "/";
+                } else {
+                    selectedPath = getDirectory(buildFilePath(PROJECT_BASE_DIR)) + "/";
+                }
                 textField.textProperty().setValue(selectedPath);
             }
         });

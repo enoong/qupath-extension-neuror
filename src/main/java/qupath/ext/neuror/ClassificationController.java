@@ -22,9 +22,9 @@ public class ClassificationController extends ControllerBase {
         }
 
         handleModelPath(view.getModelPath().getButton(), view.getModelPath().getTextField(), model.getClsModelPath(), view.getLevel().getChoiceBox());
-        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getClsImagesPath());
-        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getClsOutputPath());
-        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getClsJSONPath());
+        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getClsImagesPath(), true);
+        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getClsOutputPath(), true);
+        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getClsJSONPath(), true);
 
         handleOption(view.getImgLib().getChoiceBox(), model.getClsImgLib());
         handleOption(view.getPatchSize().getTextField(), model.getClsPatchSize());

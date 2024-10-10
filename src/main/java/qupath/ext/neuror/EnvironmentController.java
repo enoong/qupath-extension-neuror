@@ -6,7 +6,7 @@ public class EnvironmentController extends ControllerBase {
 
     public EnvironmentController(EnvironmentModel model, EnvironmentView view) {
 
-        handleDirectoryPath(view.getEnvAnacondaPath().getButton(), view.getEnvAnacondaPath().getTextField(), model.getEnvAnacondaPath());
+        handleDirectoryPath(view.getEnvAnacondaPath().getButton(), view.getEnvAnacondaPath().getTextField(), model.getEnvAnacondaPath(), false);
         handleFilePath(view.getEnvPythonPath().getButton(), view.getEnvPythonPath().getTextField(), model.getEnvPythonPath());
         handleFilePath(view.getEnvSegmentationPath().getButton(), view.getEnvSegmentationPath().getTextField(), model.getEnvSegmentationPath());
         handleFilePath(view.getEnvObjectDetectionPath().getButton(), view.getEnvObjectDetectionPath().getTextField(), model.getEnvObjectDetectionPath());

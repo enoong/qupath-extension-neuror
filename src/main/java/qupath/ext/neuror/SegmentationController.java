@@ -21,9 +21,9 @@ public class SegmentationController extends ControllerBase {
         }
 
         handleModelPath(view.getModelPath().getButton(), view.getModelPath().getTextField(), model.getSegModelPath(), view.getLevel().getChoiceBox());
-        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getSegImagesPath());
-        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getSegOutputPath());
-        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getSegJSONPath());
+        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getSegImagesPath(), true);
+        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getSegOutputPath(), true);
+        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getSegJSONPath(), true);
 
         handleOption(view.getImgLib().getChoiceBox(), model.getSegImgLib());
         handleOption(view.getPatchSize().getTextField(), model.getSegPatchSize());

@@ -20,9 +20,9 @@ public class ObjectDetectionController extends ControllerBase {
         }
 
         handleModelPath(view.getModelPath().getButton(), view.getModelPath().getTextField(), model.getDetModelPath(), view.getLevel().getChoiceBox());
-        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getDetImagesPath());
-        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getDetOutputPath());
-        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getDetJSONPath());
+        handleDirectoryPath(view.getImagesPath().getButton(), view.getImagesPath().getTextField(), model.getDetImagesPath(), true);
+        handleDirectoryPath(view.getOutputPath().getButton(), view.getOutputPath().getTextField(), model.getDetOutputPath(), true);
+        handleDirectoryPath(view.getJSONPath().getButton(), view.getJSONPath().getTextField(), model.getDetJSONPath(), true);
 
         handleOption(view.getImgLib().getChoiceBox(), model.getDetImgLib());
         handleOption(view.getPatchSize().getTextField(), model.getDetPatchSize());
