@@ -31,7 +31,7 @@ With these steps, you should be able to see this extension automatically loaded 
 ### Building JARs
 
 1. Open the terminal in IDEA, then `cd` to the extension directory.
-2. Run `gradlew build`.\
+2. Run `./gradlew build`
 
 Created JARs will be in `qupath-extension-neuror/build/libs/`.
 
