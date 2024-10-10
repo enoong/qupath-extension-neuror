@@ -11,7 +11,7 @@ public class ObjectDetectionController extends ControllerBase {
 
     public ObjectDetectionController(QuPathGUI qupath, EnvironmentModel envModel, ObjectDetectionModel model, ObjectDetectionView view) {
 
-        if (envModel.getEnvObjectDetectionPath().getValue() == "") {
+        if (envModel.getEnvObjectDetectionPath().getValue().isEmpty()) {
             errorAlert("Path to detection.py not set. Please set it in 'Environments' first.");
         }
 
@@ -44,7 +44,7 @@ public class ObjectDetectionController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getDetROIClasses().getValue() != "") {
+                if (!model.getDetROIClasses().getValue().isEmpty()) {
                     scriptName += "object_detection_roiONLY";
                 } else {
                     scriptName += "object_detection";

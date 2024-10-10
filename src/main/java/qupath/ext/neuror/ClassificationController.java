@@ -13,7 +13,7 @@ public class ClassificationController extends ControllerBase {
 
     public ClassificationController(QuPathGUI qupath, EnvironmentModel envModel, ClassificationModel model, ClassificationView view) {
 
-        if (envModel.getEnvClassificationPath().getValue() == "") {
+        if (envModel.getEnvClassificationPath().getValue().isEmpty()) {
             errorAlert("Path to classification.py not set. Please set it in 'Environments' first.");
         }
 
@@ -48,7 +48,7 @@ public class ClassificationController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getClsROIClasses().getValue() != "") {
+                if (!model.getClsROIClasses().getValue().isEmpty()) {
                     scriptName += "classification_roiONLY";
                 } else {
                     scriptName += "classification";

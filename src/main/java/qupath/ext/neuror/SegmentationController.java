@@ -12,7 +12,7 @@ public class SegmentationController extends ControllerBase {
 
     public SegmentationController(QuPathGUI qupath, EnvironmentModel envModel, SegmentationModel model, SegmentationView view) {
 
-        if (envModel.getEnvSegmentationPath().getValue() == "") {
+        if (envModel.getEnvSegmentationPath().getValue().isEmpty()) {
             errorAlert("Path to segmentation.py not set. Please set it in 'Environments' first.");
         }
 
@@ -46,11 +46,13 @@ public class SegmentationController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getSegROIClasses().getValue() != "") {
+                if (!model.getSegROIClasses().getValue().isEmpty()) {
                     scriptName += "segmentation_roiONLY";
                 } else {
                     scriptName += "segmentation";
                 }
+
+                System.out.println(model.getSegROIClasses().getValue());
 
                 scriptName += "_ds_" + String.valueOf(downsample) +
                         "_ps_" + model.getSegPatchSize().getValue() +
