@@ -46,7 +46,7 @@ public class SegmentationController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getSegROIClasses().getValue() == null) {
+                if (model.getSegROIClasses().getValue() != "") {
                     scriptName += "segmentation_roiONLY";
                 } else {
                     scriptName += "segmentation";

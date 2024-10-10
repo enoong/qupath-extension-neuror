@@ -48,7 +48,7 @@ public class ClassificationController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getClsROIClasses().getValue() != null) {
+                if (model.getClsROIClasses().getValue() != "") {
                     scriptName += "classification_roiONLY";
                 } else {
                     scriptName += "classification";

@@ -44,7 +44,7 @@ public class ObjectDetectionController extends ControllerBase {
 
                 String scriptName = "";
 
-                if (model.getDetROIClasses().getValue() != null) {
+                if (model.getDetROIClasses().getValue() != "") {
                     scriptName += "object_detection_roiONLY";
                 } else {
                     scriptName += "object_detection";
