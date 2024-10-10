@@ -1,5 +1,3 @@
-package qupath.ext.neuror
-
 import qupath.lib.roi.ROIs
 import qupath.lib.roi.RectangleROI
 import qupath.lib.regions.ImagePlane

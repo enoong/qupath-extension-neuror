@@ -1,6 +1,3 @@
-package qupath.ext.neuror
-
-
 import static qupath.lib.gui.scripting.QPEx.*
 
 // --- SET THESE PARAMETERS -----------------------------------------------------------

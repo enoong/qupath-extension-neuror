@@ -1,6 +1,3 @@
-package qupath.ext.neuror
-
-
 import qupath.lib.io.GsonTools
 
 // --- SET THESE PARAMETERS -----------------------------------------------------------
