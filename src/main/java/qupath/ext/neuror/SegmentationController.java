@@ -110,7 +110,7 @@ public class SegmentationController extends ControllerBase {
             //fill run_segmentation_roi.groovy
             filledSegmentationScript = String.format(
                     segmentationScript,
-                    envModel.getEnvAnacondaPath().getValue(),
+                    envModel.getEnvAnacondaPath().getValue().substring(0, envModel.getEnvAnacondaPath().getValue().length() - 1), //remove trailing "/" from anaconda path
                     envModel.getEnvPythonPath().getValue().replace('\\', '/'),
                     envModel.getEnvSegmentationPath().getValue().replace('\\', '/'),
                     model.getSegModelPath().getValue().replace('\\', '/'),

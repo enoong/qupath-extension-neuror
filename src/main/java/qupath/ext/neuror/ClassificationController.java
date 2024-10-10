@@ -129,7 +129,7 @@ public class ClassificationController extends ControllerBase {
             if (classesInput == Boolean.TRUE) {
                 filledClassificationScript = String.format(
                         classificationScript,
-                        envModel.getEnvAnacondaPath().getValue(),
+                        envModel.getEnvAnacondaPath().getValue().substring(0, envModel.getEnvAnacondaPath().getValue().length() - 1), //remove trailing "/" from anaconda path
                         envModel.getEnvClassificationPath().getValue().replace('\\', '/'),
                         model.getClsImagesPath().getValue().replace('\\', '/'),
                         model.getClsModelPath().getValue().replace('\\', '/'),

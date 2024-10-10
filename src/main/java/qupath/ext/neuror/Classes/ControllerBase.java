@@ -64,7 +64,7 @@ public class ControllerBase {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String selectedPath = getFile(stringProperty.getValue());
+                String selectedPath = getFile(stringProperty.getValue()).replace(".exe", "");
                 textField.textProperty().setValue(selectedPath);
             }
         });
@@ -80,7 +80,7 @@ public class ControllerBase {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String selectedPath = getDirectory(stringProperty.getValue());
+                String selectedPath = getDirectory(stringProperty.getValue()) + "/";
                 textField.textProperty().setValue(selectedPath);
             }
         });

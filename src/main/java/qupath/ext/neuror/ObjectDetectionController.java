@@ -106,7 +106,7 @@ public class ObjectDetectionController extends ControllerBase {
             //fill run_detection.groovy
             filledObjectDetectionScript = String.format(
                     objectDetectionScript,
-                    envModel.getEnvAnacondaPath().getValue(),
+                    envModel.getEnvAnacondaPath().getValue().substring(0, envModel.getEnvAnacondaPath().getValue().length() - 1), //remove trailing "/" from anaconda path
                     envModel.getEnvPythonPath().getValue().replace('\\', '/'),
                     envModel.getEnvObjectDetectionPath().getValue().replace('\\', '/'),
                     model.getDetModelPath().getValue().replace('\\', '/'),
