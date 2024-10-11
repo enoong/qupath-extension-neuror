@@ -9,7 +9,13 @@ To install this extension, simply drag and drop the latest release into an open 
 ## Usage
 
 1. Configure environment paths under Extensions > NeuroR Extension > Environments.
+
+
+   ![375001399-4bc85b4a-e726-46b8-9c42-65697cd2f3ad](https://github.com/user-attachments/assets/223b5281-e990-4b82-b121-145c94ac3cbd)
+   ![375001653-5d5a1dc2-2482-4922-8629-39544ef26683](https://github.com/user-attachments/assets/d2212a5d-f1fc-441d-b214-87d1420a4a9b)
 2. Set your preferences for segmentation, object detection, and classification in Extensions > NeuroR Extension > Segmentation/Object Detection/Classification.
+
+   ![375001880-ad69a68d-ba1e-4938-a4ac-920095880fa7](https://github.com/user-attachments/assets/905239ef-e751-4253-a03a-5d8d1036af94)
 3. Click the 'Generate' button next to Script Name to create a script, then edit the generated script name as needed.
 4. Press the 'Create Script!' button to open the Script Editor with your custom script.
 5. Start inference by pressing the 'Run' button at the bottom right of the Script Editor.
