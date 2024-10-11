@@ -40,6 +40,6 @@ Created JARs will be in `qupath-extension-neuror/build/libs/`.
 If you encounter `java.lang.ClassNotFoundException: org.slf4j.LoggerFactory` error while trying to run QuPath, try restarting IDEA.
 
 
-# Acknowledgments
+## Acknowledgments
 
 This work was supported by a grant from the Korea Health Technology R&D Project through the Korea Health Industry Development Institute (KHIDI), funded by the Ministry of Health & Welfare, Republic of Korea (grant number: HI21C1137).
